@@ -1,0 +1,782 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Learn Crypto with Mallard 🦆 - Complete Beginner's Guide</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #1a2b1a 0%, #2d4a2d 30%, #1e3a3a 70%, #0d2818 100%);
+            color: #ffffff;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        header {
+            background: rgba(26, 43, 26, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(34, 139, 34, 0.3);
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #22c55e;
+            text-decoration: none;
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-menu a {
+            color: #cbd5e1;
+            text-decoration: none;
+            transition: color 0.3s ease;
+            font-weight: 500;
+        }
+
+        .nav-menu a:hover {
+            color: #22c55e;
+        }
+
+        .back-home {
+            background: linear-gradient(45deg, #059669, #0891b2);
+            color: white;
+            padding: 0.7rem 1.5rem;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: transform 0.3s ease;
+        }
+
+        .back-home:hover {
+            transform: translateY(-2px);
+        }
+
+        /* Hero Section */
+        .hero {
+            text-align: center;
+            padding: 4rem 0;
+        }
+
+        .hero-icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-15px); }
+        }
+
+        .hero h1 {
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 900;
+            margin-bottom: 1rem;
+            background: linear-gradient(45deg, #22c55e, #0891b2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            color: #cbd5e1;
+            max-width: 600px;
+            margin: 0 auto 2rem;
+        }
+
+        /* Table of Contents */
+        .toc {
+            background: rgba(34, 139, 34, 0.1);
+            border: 1px solid rgba(34, 139, 34, 0.3);
+            border-radius: 20px;
+            padding: 2rem;
+            margin: 2rem 0;
+            text-align: center;
+        }
+
+        .toc h2 {
+            color: #22c55e;
+            margin-bottom: 1.5rem;
+        }
+
+        .toc-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+        }
+
+        .toc-item {
+            background: rgba(34, 139, 34, 0.1);
+            border: 1px solid rgba(34, 139, 34, 0.3);
+            border-radius: 15px;
+            padding: 1.5rem;
+            text-decoration: none;
+            color: inherit;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .toc-item:hover {
+            background: rgba(34, 139, 34, 0.2);
+            transform: translateY(-3px);
+        }
+
+        .toc-icon {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+        .toc-title {
+            color: #22c55e;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        .toc-desc {
+            color: #cbd5e1;
+            font-size: 0.9rem;
+        }
+
+        /* Section Styles */
+        .learn-section {
+            margin: 4rem 0;
+            scroll-margin-top: 100px;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .section-header h2 {
+            font-size: 2.5rem;
+            color: #22c55e;
+            margin-bottom: 1rem;
+        }
+
+        .section-header .section-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        .section-subtitle {
+            font-size: 1.1rem;
+            color: #cbd5e1;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        /* Content Cards */
+        .content-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+
+        .content-card {
+            background: rgba(34, 139, 34, 0.1);
+            border: 1px solid rgba(34, 139, 34, 0.3);
+            border-radius: 20px;
+            padding: 2rem;
+            transition: all 0.3s ease;
+        }
+
+        .content-card:hover {
+            background: rgba(34, 139, 34, 0.15);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(34, 197, 94, 0.2);
+        }
+
+        .card-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        .card-title {
+            font-size: 1.3rem;
+            color: #22c55e;
+            margin-bottom: 1rem;
+            font-weight: bold;
+        }
+
+        .card-description {
+            color: #e2e8f0;
+            line-height: 1.6;
+        }
+
+        /* Detailed Explanation */
+        .explanation {
+            background: rgba(13, 40, 24, 0.3);
+            border-radius: 20px;
+            padding: 3rem;
+            margin: 3rem 0;
+        }
+
+        .explanation h3 {
+            color: #22c55e;
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .explanation h4 {
+            color: #0891b2;
+            font-size: 1.2rem;
+            margin: 2rem 0 1rem 0;
+        }
+
+        .explanation p {
+            color: #e2e8f0;
+            margin-bottom: 1.5rem;
+        }
+
+        .explanation ul {
+            color: #cbd5e1;
+            margin-left: 2rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .explanation li {
+            margin-bottom: 0.5rem;
+        }
+
+        /* Highlight Boxes */
+        .highlight-box {
+            background: rgba(34, 197, 94, 0.1);
+            border: 2px solid rgba(34, 197, 94, 0.3);
+            border-radius: 15px;
+            padding: 2rem;
+            margin: 2rem 0;
+            text-align: center;
+        }
+
+        .highlight-box h4 {
+            color: #22c55e;
+            margin-bottom: 1rem;
+        }
+
+        .highlight-box p {
+            color: #cbd5e1;
+            font-size: 1.1rem;
+        }
+
+        .warning-box {
+            background: rgba(251, 191, 36, 0.1);
+            border: 2px solid rgba(251, 191, 36, 0.3);
+            border-radius: 15px;
+            padding: 2rem;
+            margin: 2rem 0;
+        }
+
+        .warning-box h4 {
+            color: #fbbf24;
+            margin-bottom: 1rem;
+        }
+
+        .warning-box p {
+            color: #fef3c7;
+        }
+
+        /* CTA Section */
+        .cta-section {
+            background: rgba(34, 139, 34, 0.1);
+            border: 2px solid rgba(34, 139, 34, 0.3);
+            border-radius: 20px;
+            padding: 3rem;
+            text-align: center;
+            margin: 4rem 0;
+        }
+
+        .cta-section h3 {
+            color: #22c55e;
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .cta-section p {
+            color: #cbd5e1;
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 50px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: transform 0.3s ease;
+            cursor: pointer;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background: linear-gradient(45deg, #059669, #0891b2);
+            color: white;
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: #22c55e;
+            border: 2px solid #22c55e;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+
+        /* Footer */
+        footer {
+            background: rgba(13, 40, 24, 0.5);
+            border-top: 1px solid rgba(34, 139, 34, 0.3);
+            padding: 3rem 0;
+            text-align: center;
+            color: #64748b;
+            margin-top: 4rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-menu {
+                display: none;
+            }
+
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .toc-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .cta-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .explanation {
+                padding: 2rem 1rem;
+            }
+
+            .hero {
+                padding: 2rem 0;
+            }
+        }
+
+        /* Smooth scroll behavior */
+        html {
+            scroll-behavior: smooth;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <a href="#" class="logo">🦆 Mallard Learn</a>
+                <nav>
+                    <ul class="nav-menu">
+                        <li><a href="#blockchain">Blockchain</a></li>
+                        <li><a href="#xrp">XRP</a></li>
+                        <li><a href="#memecoins">Memecoins</a></li>
+                        <li><a href="#mallard">Mallard</a></li>
+                    </ul>
+                </nav>
+                <a href="#" class="back-home" onclick="window.close()">← Back to Main</a>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="container">
+                <div class="hero-icon">🦆</div>
+                <h1>Learn Crypto with Mallard</h1>
+                <p>Complete beginner's guide to blockchain, XRP, memecoins, and the Mallard phenomenon. Start your crypto journey here!</p>
+            </div>
+        </section>
+
+        <!-- Table of Contents -->
+        <section class="toc">
+            <div class="container">
+                <h2>What You'll Learn</h2>
+                <div class="toc-grid">
+                    <a href="#blockchain" class="toc-item">
+                        <span class="toc-icon">🔗</span>
+                        <div class="toc-title">Blockchain Basics</div>
+                        <div class="toc-desc">Understanding the foundation of all crypto</div>
+                    </a>
+                    <a href="#xrp" class="toc-item">
+                        <span class="toc-icon">⚡</span>
+                        <div class="toc-title">XRP & XRPL</div>
+                        <div class="toc-desc">Fast, cheap, and green blockchain technology</div>
+                    </a>
+                    <a href="#memecoins" class="toc-item">
+                        <span class="toc-icon">😄</span>
+                        <div class="toc-title">Memecoins</div>
+                        <div class="toc-desc">Community-driven crypto phenomenon</div>
+                    </a>
+                    <a href="#mallard" class="toc-item">
+                        <span class="toc-icon">🦆</span>
+                        <div class="toc-title">Mallard Story</div>
+                        <div class="toc-desc">From tweet to legendary community</div>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Blockchain Section -->
+        <section class="learn-section" id="blockchain">
+            <div class="container">
+                <div class="section-header">
+                    <span class="section-icon">🔗</span>
+                    <h2>What is Blockchain?</h2>
+                    <p class="section-subtitle">Think of blockchain as a digital ledger that everyone can see but no one can cheat</p>
+                </div>
+
+                <div class="content-grid">
+                    <div class="content-card">
+                        <span class="card-icon">📖</span>
+                        <h3 class="card-title">Digital Ledger</h3>
+                        <p class="card-description">A blockchain is like a digital notebook that records every transaction. Once something is written, it can't be erased or changed.</p>
+                    </div>
+
+                    <div class="content-card">
+                        <span class="card-icon">👥</span>
+                        <h3 class="card-title">Decentralized</h3>
+                        <p class="card-description">Instead of one bank controlling everything, thousands of computers around the world work together to keep the records safe.</p>
+                    </div>
+
+                    <div class="content-card">
+                        <span class="card-icon">🔒</span>
+                        <h3 class="card-title">Secure & Transparent</h3>
+                        <p class="card-description">Every transaction is visible to everyone, but your personal information stays private. It's like having a transparent safe that only you have the key to.</p>
+                    </div>
+                </div>
+
+                <div class="explanation">
+                    <h3>How Does Blockchain Work?</h3>
+                    <p>Imagine you and your friends keep track of who owes money to whom in a shared notebook. In traditional systems, one person (like a bank) keeps the notebook. But what if that person makes a mistake or lies?</p>
+                    
+                    <p>Blockchain solves this by giving everyone a copy of the notebook. When someone wants to add a new entry (like "Alice paid Bob $10"), the majority of friends must agree it's valid before it gets added to everyone's notebook.</p>
+
+                    <div class="highlight-box">
+                        <h4>🎯 Key Benefit</h4>
+                        <p>No single person or organization can control or manipulate the records. This creates trust without needing to trust any individual party.</p>
+                    </div>
+
+                    <h4>Real-World Applications:</h4>
+                    <ul>
+                        <li><strong>Digital Money:</strong> Cryptocurrencies like Bitcoin and XRP</li>
+                        <li><strong>Digital Art:</strong> NFTs that prove ownership of unique digital items</li>
+                        <li><strong>Smart Contracts:</strong> Automated agreements that execute themselves</li>
+                        <li><strong>Supply Chain:</strong> Tracking products from factory to store</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- XRP Section -->
+        <section class="learn-section" id="xrp">
+            <div class="container">
+                <div class="section-header">
+                    <span class="section-icon">⚡</span>
+                    <h2>What is XRP?</h2>
+                    <p class="section-subtitle">XRP is a digital currency designed to make sending money across borders fast, cheap, and reliable</p>
+                </div>
+
+                <div class="content-grid">
+                    <div class="content-card">
+                        <span class="card-icon">🚀</span>
+                        <h3 class="card-title">Lightning Fast</h3>
+                        <p class="card-description">XRP transactions settle in 3-5 seconds, compared to days for traditional bank transfers or hours for Bitcoin.</p>
+                    </div>
+
+                    <div class="content-card">
+                        <span class="card-icon">💰</span>
+                        <h3 class="card-title">Ultra Cheap</h3>
+                        <p class="card-description">Sending XRP costs fractions of a penny, making it practical for everyday use and microtransactions.</p>
+                    </div>
+
+                    <div class="content-card">
+                        <span class="card-icon">🌍</span>
+                        <h3 class="card-title">Global Reach</h3>
+                        <p class="card-description">Banks and financial institutions worldwide use XRP to send money across borders instantly and cheaply.</p>
+                    </div>
+                </div>
+
+                <div class="explanation">
+                    <h3>The XRP Ledger (XRPL)</h3>
+                    <p>The XRP Ledger is the blockchain that XRP runs on. Think of it as the highway system, and XRP as the cars driving on it. But this highway is special:</p>
+
+                    <h4>🏃‍♂️ Speed Champion</h4>
+                    <p>While Bitcoin can handle about 7 transactions per second and Ethereum about 15, XRPL can process 1,500+ transactions per second. It's like comparing a bicycle path to a superhighway.</p>
+
+                    <h4>🌱 Environmentally Friendly</h4>
+                    <p>Unlike Bitcoin mining that uses massive amounts of electricity, XRPL uses a consensus mechanism that's 120,000 times more energy-efficient than Bitcoin.</p>
+
+                    <h4>🏦 Enterprise Ready</h4>
+                    <p>Major banks and payment companies like Santander, American Express, and MoneyGram use XRPL technology for real-world payments.</p>
+
+                    <div class="highlight-box">
+                        <h4>💡 Fun Fact</h4>
+                        <p>XRP was created before Bitcoin was even released! The XRPL has been running continuously since 2012 without any major outages.</p>
+                    </div>
+
+                    <h4>What Makes XRPL Special for Tokens?</h4>
+                    <ul>
+                        <li><strong>Built-in DEX:</strong> You can trade tokens directly on the ledger</li>
+                        <li><strong>Low Fees:</strong> Creating and trading tokens costs almost nothing</li>
+                        <li><strong>Fast Settlement:</strong> All transactions confirm in seconds</li>
+                        <li><strong>Energy Efficient:</strong> Green technology that doesn't harm the environment</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Memecoins Section -->
+        <section class="learn-section" id="memecoins">
+            <div class="container">
+                <div class="section-header">
+                    <span class="section-icon">😄</span>
+                    <h2>What are Memecoins?</h2>
+                    <p class="section-subtitle">Memecoins are cryptocurrencies inspired by internet culture, memes, and community-driven fun</p>
+                </div>
+
+                <div class="content-grid">
+                    <div class="content-card">
+                        <span class="card-icon">🎭</span>
+                        <h3 class="card-title">Born from Memes</h3>
+                        <p class="card-description">These tokens start as jokes or references to popular internet memes, but can develop real communities and value.</p>
+                    </div>
+
+                    <div class="content-card">
+                        <span class="card-icon">👨‍👩‍👧‍👦</span>
+                        <h3 class="card-title">Community Driven</h3>
+                        <p class="card-description">Success depends on passionate communities that create content, spread awareness, and build together.</p>
+                    </div>
+
+                    <div class="content-card">
+                        <span class="card-icon">🎢</span>
+                        <h3 class="card-title">High Volatility</h3>
+                        <p class="card-description">Prices can change dramatically based on social media trends, celebrity mentions, or community activities.</p>
+                    </div>
+                </div>
+
+                <div class="explanation">
+                    <h3>The Memecoin Phenomenon</h3>
+                    <p>Memecoins represent a fascinating intersection of internet culture and finance. What started as jokes have sometimes become serious investment opportunities worth billions of dollars.</p>
+
+                    <h4>🐕 Famous Examples</h4>
+                    <ul>
+                        <li><strong>Dogecoin (DOGE):</strong> Started as a joke based on the "Doge" meme, now worth billions</li>
+                        <li><strong>Shiba Inu (SHIB):</strong> Called the "Dogecoin killer," built a massive ecosystem</li>
+                        <li><strong>Pepe (PEPE):</strong> Based on the famous Pepe the Frog meme</li>
+                    </ul>
+
+                    <h4>🚀 Why Do People Buy Memecoins?</h4>
+                    <ul>
+                        <li><strong>Community:</strong> Join a fun, passionate group with shared interests</li>
+                        <li><strong>Potential:</strong> Early supporters of successful memecoins can see huge returns</li>
+                        <li><strong>Entertainment:</strong> It's fun to be part of internet culture and meme creation</li>
+                        <li><strong>Accessibility:</strong> Often cheaper and easier to buy than major cryptocurrencies</li>
+                    </ul>
+
+                    <div class="warning-box">
+                        <h4>⚠️ Important to Remember</h4>
+                        <p>Memecoins are highly speculative and risky. Only invest what you can afford to lose, and always do your own research (DYOR)!</p>
+                    </div>
+
+                    <h4>🌊 XRPL Memecoins</h4>
+                    <p>The XRP Ledger has become home to a growing ecosystem of memecoins that benefit from:</p>
+                    <ul>
+                        <li><strong>Fast transactions:</strong> Trade instantly without waiting</li>
+                        <li><strong>Low fees:</strong> More money goes to the community, not fees</li>
+                        <li><strong>Environmental friendliness:</strong> Guilt-free fun that doesn't harm the planet</li>
+                        <li><strong>Built-in trading:</strong> No need for complex DeFi protocols</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Mallard Section -->
+        <section class="learn-section" id="mallard">
+            <div class="container">
+                <div class="section-header">
+                    <span class="section-icon">🦆</span>
+                    <h2>What is Mallard?</h2>
+                    <p class="section-subtitle">Mallard is more than just a memecoin—it's a community-driven movement with a legendary origin story</p>
+                </div>
+
+                <div class="content-grid">
+                    <div class="content-card">
+                        <span class="card-icon">🎯</span>
+                        <h3 class="card-title">The Duck Legend</h3>
+                        <p class="card-description">Born from a simple reply about naming a pet duck "Mallard Fillmore" under a David Schwartz tweet, sparking a viral movement.</p>
+                    </div>
+
+                    <div class="content-card">
+                        <span class="card-icon">👨‍💼</span>
+                        <h3 class="card-title">David Schwartz Connection</h3>
+                        <p class="card-description">The Ripple CTO himself has acknowledged the community through cryptic duck references and Easter eggs in his social media.</p>
+                    </div>
+
+                    <div class="content-card">
+                        <span class="card-icon">🌟</span>
+                        <h3 class="card-title">XRPL Native</h3>
+                        <p class="card-description">Built on the XRP Ledger, Mallard benefits from lightning-fast transactions, minimal fees, and eco-friendly technology.</p>
+                    </div>
+                </div>
+
+                <div class="explanation">
+                    <h3>The Mallard Story</h3>
+                    <p>Mallard's journey from meme to movement is a perfect example of how internet culture can create real value and community. Here's what makes Mallard special:</p>
+
+                    <h4>🎯 The Origin Story</h4>
+                    <p>It all started with a casual comment about naming a pet duck "Mallard Fillmore" under a David Schwartz tweet. This simple moment sparked the imagination of a developer who created both an NFT collection and a token, launching the Mallard ecosystem.</p>
+
+                    <h4>🔍 The Easter Eggs</h4>
+                    <p>What sets Mallard apart is the ongoing mystery and interaction with David Schwartz. Through a series of tweets featuring ducks in McDonald's ads and music videos, David has seemingly acknowledged the community in his characteristic cryptic style.</p>
+
+                    <h4>👥 The Community</h4>
+                    <p>The Mallard community ("the flock") has grown into a passionate group that creates content, raids social media, and builds together. The mysterious appearance of @joelkatz in the Telegram chat added another layer to the legend.</p>
+
+                    <div class="highlight-box">
+                        <h4>🦆 Why Choose Mallard?</h4>
+                        <p>Mallard combines the fun of memecoins with the technical advantages of XRPL, creating a unique project that's both entertaining and practical.</p>
+                    </div>
+
+                    <h4>🚀 Getting Started with Mallard</h4>
+                    <ul>
+                        <li><strong>Set up an XRPL wallet:</strong> XUMM, Gem Wallet, or Crossmark</li>
+                        <li><strong>Get some XRP:</strong> You'll need it for trading and transaction fees</li>
+                        <li><strong>Join the community:</strong> Connect with the flock on Telegram and social media</li>
+                        <li><strong>Trade on exchanges:</strong> Buy $MALLARD on Horizon, FirstLedger, or XMagnetic</li>
+                    </ul>
+
+                    <h4>🎪 The Technical Details</h4>
+                    <ul>
+                        <li><strong>Token Symbol:</strong> $MALLARD</li>
+                        <li><strong>Blockchain:</strong> XRP Ledger (XRPL)</li>
+                        <li><strong>Contract Address:</strong> raaoPU9crbLGEFCMyh8moNH4gipsHJY3wN</li>
+                        <li><strong>Exchanges:</strong> Horizon XRPL, FirstLedger, XMagnetic</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA Section -->
+        <section class="cta-section">
+            <div class="container">
+                <h3>Ready to Join the Flock? 🦆</h3>
+                <p>Now that you understand the basics, you're ready to explore the world of Mallard and XRPL memecoins!</p>
+                <div class="cta-buttons">
+                    <a href="https://t.me/mallardxrpl" class="btn btn-primary">Join Community</a>
+                    <a href="https://horizonxrpl.com/token/4D414C4C41524400000000000000000000000000:raaoPU9crbLGEFCMyh8moNH4gipsHJY3wN?ref=saDuSBvG2Q" class="btn btn-secondary">Start Trading</a>
+                </div>
+            </div>
+        </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 Mallard Education Center. Learn, Explore, and Swim with the Flock! 🦆</p>
+            <p style="margin-top: 1rem; font-size: 0.9rem; opacity: 0.7;">
+                Educational content only. Not financial advice. Always DYOR (Do Your Own Research).
+            </p>
+        </div>
+    </footer>
+
+    <script>
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Header scroll effect
+        window.addEventListener('scroll', () => {
+            const header = document.querySelector('header');
+            if (window.scrollY > 50) {
+                header.style.background = 'rgba(26, 43, 26, 0.98)';
+            } else {
+                header.style.background = 'rgba(26, 43, 26, 0.95)';
+            }
+        });
+
+        // Add active state to navigation based on scroll position
+        const sections = document.querySelectorAll('.learn-section');
+        const navLinks = document.querySelectorAll('.nav-menu a');
+
+        function updateActiveNav() {
+            const scrollPosition = window.scrollY + 200;
+            
+            sections.forEach((section, index) => {
+                const sectionTop = section.offsetTop;
+                const sectionBottom = sectionTop + section.offsetHeight;
+                
+                if (scrollPosition >= sectionTop && scrollPosition <= sectionBottom) {
+                    navLinks.forEach(link => link.style.color = '#cbd5e1');
+                    if (navLinks[index]) {
+                        navLinks[index].style.color = '#22c55e';
+                    }
+                }
+            });
+        }
+
+        window.addEventListener('scroll', updateActiveNav);
+
+        // Initialize
+        updateActiveNav();
+    </script>
+</body>
+</html>
