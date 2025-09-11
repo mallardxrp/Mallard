@@ -5,6 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
     <title>Mallard 🦆 - From a Meme to a Movement</title>
     <meta name="description" content="Mallard - The legendary XRPL memecoin that caught David Schwartz's attention. Join the community-driven movement.">
+    
+    <!-- Preconnect to external domains for faster loading -->
+    <link rel="preconnect" href="https://dexscreener.com">
+    <link rel="dns-prefetch" href="https://dexscreener.com">
+    <link rel="preconnect" href="https://raw.githubusercontent.com">
+    <link rel="dns-prefetch" href="https://raw.githubusercontent.com">
+    
     <style>
         * {
             margin: 0;
@@ -212,6 +219,152 @@
 
         .btn-primary:hover {
             box-shadow: 0 6px 20px rgba(34, 197, 94, 0.4);
+        }
+
+        /* Live Chart Section */
+        .live-chart {
+            padding: clamp(3rem, 8vw, 5rem) 0;
+            background: rgba(13, 40, 24, 0.3);
+            position: relative;
+        }
+
+        .live-chart.loading::before {
+            content: 'Loading chart...';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #22c55e;
+            font-size: 1.2rem;
+            z-index: 1;
+            animation: pulse 1.5s ease-in-out infinite;
+        }
+
+        .chart-container {
+            background: rgba(34, 139, 34, 0.05);
+            border: 1px solid rgba(34, 139, 34, 0.3);
+            border-radius: 20px;
+            padding: clamp(1rem, 3vw, 1.5rem);
+            overflow: hidden;
+        }
+
+        .chart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: clamp(1rem, 3vw, 1.5rem);
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .chart-title {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .chart-title h3 {
+            color: #22c55e;
+            font-size: clamp(1.2rem, 4vw, 1.5rem);
+        }
+
+        .live-indicator {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.3rem 0.8rem;
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            border-radius: 20px;
+            font-size: 0.9rem;
+            color: #ef4444;
+        }
+
+        .live-indicator::before {
+            content: '';
+            width: 8px;
+            height: 8px;
+            background: #ef4444;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        #dexscreener-embed {
+            position: relative;
+            width: 100%;
+            padding-bottom: 125%;
+            border-radius: 15px;
+            overflow: hidden;
+            background: #0d1117;
+            min-height: 400px;
+        }
+
+        @media(min-width: 768px) {
+            #dexscreener-embed {
+                padding-bottom: 75%;
+            }
+        }
+
+        @media(min-width: 1400px) {
+            #dexscreener-embed {
+                padding-bottom: 65%;
+            }
+        }
+
+        #dexscreener-embed iframe {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            border: 0;
+            border-radius: 15px;
+        }
+
+        .chart-info {
+            margin-top: clamp(1rem, 3vw, 1.5rem);
+            padding: clamp(1rem, 3vw, 1.5rem);
+            background: rgba(34, 139, 34, 0.1);
+            border-radius: 15px;
+            text-align: center;
+        }
+
+        .chart-info p {
+            color: #cbd5e1;
+            font-size: clamp(0.9rem, 2.5vw, 1rem);
+            line-height: 1.6;
+        }
+
+        .chart-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .chart-btn {
+            padding: 0.6rem 1.2rem;
+            background: rgba(34, 197, 94, 0.1);
+            color: #22c55e;
+            border: 1px solid rgba(34, 197, 94, 0.3);
+            border-radius: 25px;
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .chart-btn:hover {
+            background: rgba(34, 197, 94, 0.2);
+            transform: translateY(-2px);
         }
 
         /* Sections */
@@ -434,6 +587,7 @@
             max-width: 90%;
             margin: 0 auto clamp(2rem, 6vw, 3rem);
             line-height: 1.6;
+            text-align: center;
         }
 
         .contract-section {
@@ -628,6 +782,7 @@
             <button class="nav-toggle" onclick="toggleNav()" aria-label="Toggle navigation menu">☰</button>
             <ul class="nav-links" id="navLinks">
                 <li><a href="#story">Story</a></li>
+                <li><a href="#chart">Live Chart</a></li>
                 <li><a href="#listing-partners">Listing Partners</a></li>
                 <li><a href="#timeline">Timeline</a></li>
                 <li><a href="#community">Community</a></li>
@@ -653,6 +808,45 @@
                     <div class="cta-buttons">
                         <a href="https://t.me/mallardxrpl" class="btn btn-primary" target="_blank" rel="noopener">Join Telegram</a>
                         <a href="https://horizonxrpl.com/token/4D414C4C41524400000000000000000000000000:raaoPU9crbLGEFCMyh8moNH4gipsHJY3wN?ref=saDuSBvG2Q" class="btn btn-secondary" target="_blank" rel="noopener">Buy $MALLARD</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="live-chart" id="chart">
+            <div class="container">
+                <h2 class="section-title">Live Chart</h2>
+                <p class="section-subtitle">Track $MALLARD price action in real-time</p>
+                
+                <div class="chart-container">
+                    <div class="chart-header">
+                        <div class="chart-title">
+                            <h3>$MALLARD/XRP</h3>
+                        </div>
+                        <div class="live-indicator">
+                            LIVE
+                        </div>
+                    </div>
+                    
+                    <div id="dexscreener-embed">
+                        <iframe src="https://dexscreener.com/xrpl/4D414C4C41524400000000000000000000000000.raaoPU9crbLGEFCMyh8moNH4gipsHJY3wN_XRP?embed=1&loadChartSettings=0&chartLeftToolbar=0&chartDefaultOnMobile=1&chartTheme=dark&theme=dark&chartStyle=0&chartType=usd&interval=15" 
+                                loading="lazy"
+                                title="Mallard Live Price Chart"
+                                importance="high"></iframe>
+                    </div>
+                    
+                    <div class="chart-info">
+                        <p>📊 View detailed analytics and trading history on Dexscreener</p>
+                        <div class="chart-actions">
+                            <a href="https://dexscreener.com/xrpl/4D414C4C41524400000000000000000000000000.raaoPU9crbLGEFCMyh8moNH4gipsHJY3wN_XRP" class="chart-btn" target="_blank" rel="noopener">
+                                <span>🔍</span>
+                                <span>Full Chart View</span>
+                            </a>
+                            <a href="https://horizonxrpl.com/token/4D414C4C41524400000000000000000000000000:raaoPU9crbLGEFCMyh8moNH4gipsHJY3wN?ref=saDuSBvG2Q" class="chart-btn" target="_blank" rel="noopener">
+                                <span>💱</span>
+                                <span>Trade Now</span>
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -792,7 +986,7 @@
             </div>
         </section>
 
-        <section class="section" id="community">
+        <section class="section community" id="community">
             <div class="container">
                 <h2 class="section-title">Join the Flock</h2>
                 <p>What started as a meme is turning into a legend. The lines between art, trolling, and reality are blurring. David's watching. JoelKatz is in the chat. The duck is loose.</p>
@@ -860,9 +1054,42 @@
         }
 
         // Function to open education page
-         function openEducationPage() {
-    window.open('learn.html', '_blank');
-    // or window.location.href = 'learn.html';
+        function openEducationPage() {
+            window.open('learn.html', '_blank');
+        }
+
+        // Lazy load chart when user scrolls near it
+        function initChartObserver() {
+            const chartSection = document.querySelector('.live-chart');
+            const iframe = document.querySelector('#dexscreener-embed iframe');
+            
+            if (!chartSection || !iframe) return;
+            
+            // Store the src and remove it initially
+            const originalSrc = iframe.src;
+            iframe.removeAttribute('src');
+            
+            // Create intersection observer
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        // Load the chart when section comes into view
+                        if (!iframe.src) {
+                            iframe.src = originalSrc;
+                            // Add loading class for visual feedback
+                            chartSection.classList.add('loading');
+                            iframe.onload = () => {
+                                chartSection.classList.remove('loading');
+                            };
+                        }
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, {
+                rootMargin: '200px' // Start loading 200px before element is visible
+            });
+            
+            observer.observe(chartSection);
         }
 
         // Contract address copy functionality
@@ -912,6 +1139,9 @@
 
         // Initialize everything when DOM is loaded
         document.addEventListener('DOMContentLoaded', function() {
+            // Initialize chart lazy loading
+            initChartObserver();
+            
             // Smooth scrolling for navigation links
             document.querySelectorAll('a[href^="#"]').forEach(anchor => {
                 anchor.addEventListener('click', function (e) {
@@ -999,6 +1229,12 @@
             if (prefersReducedMotion.matches) {
                 document.documentElement.style.scrollBehavior = 'auto';
             }
+
+            // Preconnect to Dexscreener for faster loading
+            const link = document.createElement('link');
+            link.rel = 'preconnect';
+            link.href = 'https://dexscreener.com';
+            document.head.appendChild(link);
         });
     </script>
 </body>
