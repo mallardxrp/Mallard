@@ -1,0 +1,1579 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Mallard Duck Race 🦆 - Multiplayer Racing Game</title>
+    <meta name="description" content="Race your duck to victory in the Mallard Duck Race! Click to move forward and be the first to cross the finish line.">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background: linear-gradient(135deg, #1a2b1a 0%, #2d4a2d 50%, #1e3a3a 100%);
+            color: #ffffff;
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Header */
+        .header {
+            background: rgba(26, 43, 26, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 2px solid rgba(34, 197, 94, 0.3);
+            padding: 1rem;
+            position: relative;
+            z-index: 100;
+        }
+
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #22c55e;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .back-btn {
+            padding: 0.6rem 1.2rem;
+            background: linear-gradient(45deg, #22c55e, #0891b2);
+            color: white;
+            border: none;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .back-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(34, 197, 94, 0.4);
+        }
+
+        /* Game Container */
+        .game-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+        }
+
+        /* Lobby Screen */
+        .lobby-screen {
+            text-align: center;
+            padding: 2rem;
+            background: rgba(34, 139, 34, 0.1);
+            border-radius: 20px;
+            border: 2px solid rgba(34, 197, 94, 0.3);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .lobby-screen h1 {
+            font-size: 2.5rem;
+            color: #22c55e;
+            margin-bottom: 1rem;
+            background: linear-gradient(45deg, #22c55e, #0891b2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Room Selection */
+        .room-selection {
+            background: rgba(34, 139, 34, 0.1);
+            border: 2px solid rgba(34, 197, 94, 0.3);
+            border-radius: 20px;
+            padding: 2rem;
+            margin: 1.5rem 0;
+        }
+
+        .room-options {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            align-items: center;
+        }
+
+        .room-option-btn {
+            padding: 1rem 2rem;
+            background: linear-gradient(45deg, #059669, #0891b2);
+            color: white;
+            border: none;
+            border-radius: 25px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(34, 197, 94, 0.3);
+            min-width: 200px;
+        }
+
+        .room-option-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(34, 197, 94, 0.4);
+        }
+
+        .divider {
+            color: #64748b;
+            font-weight: 600;
+            position: relative;
+            width: 100%;
+            text-align: center;
+        }
+
+        .divider::before,
+        .divider::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            width: 40%;
+            height: 1px;
+            background: rgba(34, 197, 94, 0.2);
+        }
+
+        .divider::before {
+            left: 0;
+        }
+
+        .divider::after {
+            right: 0;
+        }
+
+        .join-room-section {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .room-input {
+            padding: 0.8rem 1.2rem;
+            background: rgba(34, 139, 34, 0.1);
+            border: 2px solid rgba(34, 197, 94, 0.3);
+            border-radius: 15px;
+            color: white;
+            font-size: 1rem;
+            width: 180px;
+            text-align: center;
+            font-family: monospace;
+            letter-spacing: 0.1rem;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+        }
+
+        .room-input:focus {
+            outline: none;
+            border-color: #22c55e;
+            background: rgba(34, 139, 34, 0.2);
+        }
+
+        .room-input::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+            letter-spacing: normal;
+        }
+
+        .lobby-info {
+            background: rgba(13, 40, 24, 0.5);
+            padding: 1rem;
+            border-radius: 15px;
+            margin: 1.5rem 0;
+        }
+
+        .room-code {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #0891b2;
+            font-family: monospace;
+            letter-spacing: 0.2rem;
+            margin: 0.5rem 0;
+        }
+
+        .invite-section {
+            display: flex;
+            gap: 0.5rem;
+            justify-content: center;
+            margin: 1rem 0;
+        }
+
+        .invite-btn {
+            padding: 0.6rem 1rem;
+            background: rgba(34, 197, 94, 0.2);
+            color: #22c55e;
+            border: 1px solid rgba(34, 197, 94, 0.3);
+            border-radius: 15px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .invite-btn:hover {
+            background: rgba(34, 197, 94, 0.3);
+            transform: translateY(-1px);
+        }
+
+        .player-setup {
+            margin: 2rem 0;
+        }
+
+        .input-group {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            margin: 1rem 0;
+        }
+
+        .duck-input {
+            padding: 0.8rem 1.2rem;
+            background: rgba(34, 139, 34, 0.1);
+            border: 2px solid rgba(34, 197, 94, 0.3);
+            border-radius: 15px;
+            color: white;
+            font-size: 1rem;
+            width: 250px;
+            transition: all 0.3s ease;
+        }
+
+        .duck-input:focus {
+            outline: none;
+            border-color: #22c55e;
+            background: rgba(34, 139, 34, 0.2);
+        }
+
+        .duck-input::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .join-btn, .start-race-btn {
+            padding: 0.8rem 2rem;
+            background: linear-gradient(45deg, #059669, #0891b2);
+            color: white;
+            border: none;
+            border-radius: 25px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(34, 197, 94, 0.3);
+        }
+
+        .join-btn:hover, .start-race-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(34, 197, 94, 0.4);
+        }
+
+        .join-btn:disabled, .start-race-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* Admin Panel */
+        .admin-panel {
+            background: linear-gradient(135deg, 
+                rgba(251, 191, 36, 0.1) 0%, 
+                rgba(245, 158, 11, 0.1) 100%);
+            border: 2px solid rgba(251, 191, 36, 0.3);
+            border-radius: 20px;
+            padding: 1.5rem;
+            margin-top: 2rem;
+            animation: slideIn 0.5s ease;
+        }
+
+        .admin-btn {
+            padding: 0.8rem 1.5rem;
+            background: rgba(251, 191, 36, 0.2);
+            color: #fbbf24;
+            border: 2px solid rgba(251, 191, 36, 0.3);
+            border-radius: 25px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .admin-btn:hover {
+            background: rgba(251, 191, 36, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .admin-btn.remove {
+            background: rgba(239, 68, 68, 0.2);
+            color: #ef4444;
+            border-color: rgba(239, 68, 68, 0.3);
+        }
+
+        .players-list {
+            margin: 2rem 0;
+            padding: 1rem;
+            background: rgba(13, 40, 24, 0.3);
+            border-radius: 15px;
+        }
+
+        .players-list h3 {
+            color: #22c55e;
+            margin-bottom: 1rem;
+        }
+
+        .player-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.8rem;
+            margin: 0.5rem 0;
+            background: rgba(34, 139, 34, 0.1);
+            border-radius: 10px;
+            border: 1px solid rgba(34, 197, 94, 0.2);
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .player-name {
+            font-weight: 600;
+            color: #0891b2;
+        }
+
+        .player-duck {
+            font-size: 1.5rem;
+        }
+
+        .host-badge {
+            background: linear-gradient(45deg, #fbbf24, #f59e0b);
+            color: #1a2b1a;
+            padding: 0.2rem 0.6rem;
+            border-radius: 10px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+
+        /* Race Screen */
+        .race-screen {
+            display: none;
+            position: relative;
+        }
+
+        .race-track {
+            background: linear-gradient(90deg, 
+                rgba(34, 139, 34, 0.1) 0%, 
+                rgba(34, 139, 34, 0.05) 50%, 
+                rgba(34, 197, 94, 0.2) 100%);
+            border: 2px solid rgba(34, 197, 94, 0.3);
+            border-radius: 20px;
+            padding: 1rem;
+            margin: 2rem 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .finish-line {
+            position: absolute;
+            right: 50px;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background: repeating-linear-gradient(
+                to bottom,
+                #fff 0,
+                #fff 10px,
+                #000 10px,
+                #000 20px
+            );
+            z-index: 10;
+        }
+
+        .finish-flag {
+            position: absolute;
+            right: 20px;
+            top: -20px;
+            font-size: 2rem;
+            animation: wave 2s ease-in-out infinite;
+        }
+
+        @keyframes wave {
+            0%, 100% { transform: rotate(-5deg); }
+            50% { transform: rotate(5deg); }
+        }
+
+        .race-lane {
+            height: 80px;
+            margin: 0.5rem 0;
+            position: relative;
+            background: rgba(13, 40, 24, 0.2);
+            border-radius: 10px;
+            border: 1px solid rgba(34, 197, 94, 0.2);
+            display: flex;
+            align-items: center;
+            overflow: visible;
+        }
+
+        .duck-racer {
+            position: absolute;
+            left: 10px;
+            font-size: 3rem;
+            transition: left 0.1s ease-out;
+            cursor: pointer;
+            user-select: none;
+            z-index: 5;
+            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .duck-racer.bouncing {
+            animation: bounce 0.2s ease;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0) scale(1); }
+            50% { transform: translateY(-10px) scale(1.1); }
+        }
+
+        .duck-label {
+            position: absolute;
+            top: -25px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(13, 40, 24, 0.95);
+            padding: 0.2rem 0.6rem;
+            border-radius: 10px;
+            font-size: 0.8rem;
+            white-space: nowrap;
+            border: 1px solid rgba(34, 197, 94, 0.3);
+            color: #22c55e;
+            font-weight: 600;
+            z-index: 6;
+        }
+
+        .click-zone {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 200px;
+            background: linear-gradient(to top, 
+                rgba(34, 197, 94, 0.2) 0%, 
+                transparent 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 50;
+            transition: all 0.3s ease;
+        }
+
+        .click-zone.active {
+            background: linear-gradient(to top, 
+                rgba(34, 197, 94, 0.3) 0%, 
+                transparent 100%);
+        }
+
+        .click-instruction {
+            background: rgba(13, 40, 24, 0.95);
+            padding: 1rem 2rem;
+            border-radius: 20px;
+            border: 2px solid rgba(34, 197, 94, 0.5);
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #22c55e;
+            animation: pulse 1.5s ease-in-out infinite;
+            pointer-events: none;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 0.9; }
+            50% { transform: scale(1.05); opacity: 1; }
+        }
+
+        /* Countdown */
+        .countdown {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 8rem;
+            font-weight: bold;
+            color: #22c55e;
+            text-shadow: 0 0 30px rgba(34, 197, 94, 0.5);
+            z-index: 200;
+            animation: countdownPulse 1s ease;
+            pointer-events: none;
+        }
+
+        @keyframes countdownPulse {
+            0% { transform: translate(-50%, -50%) scale(0); opacity: 0; }
+            50% { transform: translate(-50%, -50%) scale(1.2); opacity: 1; }
+            100% { transform: translate(-50%, -50%) scale(1); opacity: 0.8; }
+        }
+
+        /* Winner Screen */
+        .winner-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(13, 40, 24, 0.95);
+            z-index: 300;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(5px);
+        }
+
+        .winner-modal {
+            background: linear-gradient(135deg, #1a2b1a 0%, #2d4a2d 100%);
+            border: 3px solid #22c55e;
+            border-radius: 30px;
+            padding: 3rem;
+            text-align: center;
+            max-width: 500px;
+            animation: victoryBounce 0.5s ease;
+            box-shadow: 0 20px 60px rgba(34, 197, 94, 0.4);
+        }
+
+        @keyframes victoryBounce {
+            0% { transform: scale(0); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        .winner-title {
+            font-size: 3rem;
+            color: #22c55e;
+            margin-bottom: 1rem;
+            text-shadow: 0 0 20px rgba(34, 197, 94, 0.5);
+        }
+
+        .winner-duck {
+            font-size: 6rem;
+            animation: celebrate 1s ease-in-out infinite;
+            margin: 1rem 0;
+        }
+
+        @keyframes celebrate {
+            0%, 100% { transform: rotate(-10deg) scale(1); }
+            25% { transform: rotate(10deg) scale(1.1); }
+            50% { transform: rotate(-10deg) scale(1); }
+            75% { transform: rotate(10deg) scale(1.1); }
+        }
+
+        .winner-name {
+            font-size: 2rem;
+            color: #0891b2;
+            margin: 1rem 0;
+            font-weight: bold;
+        }
+
+        .play-again-btn {
+            padding: 1rem 2rem;
+            background: linear-gradient(45deg, #059669, #0891b2);
+            color: white;
+            border: none;
+            border-radius: 25px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 1.5rem;
+        }
+
+        .play-again-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(34, 197, 94, 0.4);
+        }
+
+        /* Leaderboard */
+        .leaderboard {
+            background: rgba(34, 139, 34, 0.1);
+            border: 2px solid rgba(34, 197, 94, 0.3);
+            border-radius: 20px;
+            padding: 1.5rem;
+            margin: 2rem auto;
+            max-width: 400px;
+        }
+
+        .leaderboard h3 {
+            color: #22c55e;
+            text-align: center;
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+
+        .leaderboard-list {
+            list-style: none;
+        }
+
+        .leaderboard-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.8rem;
+            margin: 0.5rem 0;
+            background: rgba(13, 40, 24, 0.3);
+            border-radius: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .leaderboard-item:hover {
+            background: rgba(13, 40, 24, 0.5);
+            transform: translateX(5px);
+        }
+
+        .leaderboard-rank {
+            font-weight: bold;
+            font-size: 1.2rem;
+            width: 30px;
+        }
+
+        .leaderboard-rank.gold { color: #fbbf24; }
+        .leaderboard-rank.silver { color: #cbd5e1; }
+        .leaderboard-rank.bronze { color: #d97706; }
+
+        .leaderboard-name {
+            flex: 1;
+            margin: 0 1rem;
+            color: #cbd5e1;
+        }
+
+        .leaderboard-wins {
+            background: rgba(34, 197, 94, 0.2);
+            padding: 0.3rem 0.8rem;
+            border-radius: 10px;
+            color: #22c55e;
+            font-weight: bold;
+        }
+
+        /* Toast Notifications */
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(13, 40, 24, 0.95);
+            color: #22c55e;
+            padding: 1rem 2rem;
+            border-radius: 15px;
+            border: 2px solid rgba(34, 197, 94, 0.5);
+            z-index: 400;
+            animation: slideUp 0.3s ease;
+            display: none;
+        }
+
+        .toast.show {
+            display: block;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translate(-50%, 20px);
+            }
+            to {
+                opacity: 1;
+                transform: translate(-50%, 0);
+            }
+        }
+
+        /* Mobile Optimizations */
+        @media (max-width: 768px) {
+            .lobby-screen h1 {
+                font-size: 2rem;
+            }
+            
+            .room-code {
+                font-size: 1.5rem;
+            }
+            
+            .duck-input {
+                width: 200px;
+            }
+            
+            .race-lane {
+                height: 60px;
+            }
+            
+            .duck-racer {
+                font-size: 2rem;
+            }
+            
+            .countdown {
+                font-size: 5rem;
+            }
+            
+            .winner-title {
+                font-size: 2rem;
+            }
+            
+            .winner-duck {
+                font-size: 4rem;
+            }
+            
+            .click-zone {
+                height: 150px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-content">
+            <a href="index.html" class="logo">
+                <span>🦆</span>
+                <span>Mallard Duck Race</span>
+            </a>
+            <a href="index.html" class="back-btn">
+                <span>←</span>
+                <span>Back to Main</span>
+            </a>
+        </div>
+    </header>
+
+    <div class="game-container">
+        <!-- Lobby Screen -->
+        <div class="lobby-screen" id="lobbyScreen">
+            <h1>🦆 Duck Race Arena 🦆</h1>
+            <p style="color: #cbd5e1; margin-bottom: 1.5rem;">
+                Join the ultimate duck racing championship! Click faster than your opponents to win!
+            </p>
+            
+            <!-- Room Selection -->
+            <div class="room-selection" id="roomSelection">
+                <div class="room-options">
+                    <button class="room-option-btn" onclick="createNewRoom()">
+                        🏠 Create New Room
+                    </button>
+                    <div class="divider">OR</div>
+                    <div class="join-room-section">
+                        <input type="text" 
+                               class="room-input" 
+                               id="roomCodeInput" 
+                               placeholder="Enter room code..." 
+                               maxlength="9">
+                        <button class="room-option-btn" onclick="joinExistingRoom()">
+                            🔗 Join Room
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Room Info (hidden initially) -->
+            <div class="lobby-info" id="roomInfo" style="display: none;">
+                <p style="color: #cbd5e1; font-size: 0.9rem;">Room Code</p>
+                <div class="room-code" id="roomCode">DUCK-0000</div>
+                <div class="invite-section">
+                    <button class="invite-btn" onclick="copyInvite()">
+                        📋 Copy Invite Link
+                    </button>
+                    <button class="invite-btn" onclick="shareInvite()">
+                        📤 Share Room
+                    </button>
+                </div>
+                <p style="color: #64748b; font-size: 0.8rem; margin-top: 0.5rem;">
+                    Share this code with friends to join!
+                </p>
+            </div>
+
+            <div class="player-setup" id="playerSetup" style="display: none;">
+                <div class="input-group">
+                    <input type="text" 
+                           class="duck-input" 
+                           id="duckNameInput" 
+                           placeholder="Name your duck..." 
+                           maxlength="15">
+                    <button class="join-btn" id="joinBtn" onclick="joinGame()">
+                        Join Race
+                    </button>
+                </div>
+            </div>
+
+            <div class="players-list" id="playersListContainer" style="display: none;">
+                <h3>🏁 Racers Ready</h3>
+                <div id="playersList"></div>
+            </div>
+
+            <!-- Host Admin Panel -->
+            <div class="admin-panel" id="adminPanel" style="display: none;">
+                <h3 style="color: #fbbf24; margin-bottom: 1rem;">👑 Host Controls</h3>
+                <div style="display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center;">
+                    <button class="start-race-btn" id="startBtn" onclick="startRace()">
+                        🚀 Start Race!
+                    </button>
+                    <button class="admin-btn" onclick="addAIPlayer('Bot-' + Math.floor(Math.random() * 100), 2500)">
+                        ➕ Add AI Player
+                    </button>
+                    <button class="admin-btn remove" onclick="removeLastAI()">
+                        ➖ Remove AI
+                    </button>
+                </div>
+                <p style="color: #64748b; font-size: 0.8rem; margin-top: 1rem;">
+                    Minimum 2 players required to start
+                </p>
+            </div>
+        </div>
+
+        <!-- Race Screen -->
+        <div class="race-screen" id="raceScreen">
+            <div class="race-track" id="raceTrack">
+                <div class="finish-line"></div>
+                <div class="finish-flag">🏁</div>
+            </div>
+
+            <div class="click-zone" id="clickZone">
+                <div class="click-instruction">
+                    👆 CLICK HERE TO MOVE YOUR DUCK! 👆
+                </div>
+            </div>
+        </div>
+
+        <!-- Leaderboard -->
+        <div class="leaderboard" id="leaderboard" style="display: none;">
+            <h3>🏆 Leaderboard</h3>
+            <ul class="leaderboard-list" id="leaderboardList"></ul>
+        </div>
+    </div>
+
+    <!-- Countdown Display -->
+    <div class="countdown" id="countdown" style="display: none;"></div>
+
+    <!-- Winner Overlay -->
+    <div class="winner-overlay" id="winnerOverlay">
+        <div class="winner-modal">
+            <div class="winner-title">🎉 WINNER! 🎉</div>
+            <div class="winner-duck">🦆</div>
+            <div class="winner-name" id="winnerName"></div>
+            <button class="play-again-btn" onclick="resetGame()">
+                Play Again
+            </button>
+        </div>
+    </div>
+
+    <!-- Toast Notifications -->
+    <div class="toast" id="toast"></div>
+
+    <script>
+        // Game State
+        let gameState = {
+            roomCode: null,
+            players: [],
+            currentPlayer: null,
+            isHost: false,
+            raceStarted: false,
+            raceFinished: false,
+            trackWidth: 0,
+            leaderboard: {},
+            rooms: {} // Store all rooms
+        };
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            // Check if room code in URL
+            const urlParams = new URLSearchParams(window.location.search);
+            const roomFromUrl = urlParams.get('room');
+            
+            if (roomFromUrl) {
+                document.getElementById('roomCodeInput').value = roomFromUrl.toUpperCase();
+                joinExistingRoom();
+            }
+            
+            // Handle Enter key in inputs
+            document.getElementById('roomCodeInput').addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    joinExistingRoom();
+                }
+            });
+            
+            document.getElementById('duckNameInput').addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    joinGame();
+                }
+            });
+        });
+
+        // Create New Room
+        function createNewRoom() {
+            // Generate unique room code
+            gameState.roomCode = 'DUCK-' + Math.floor(Math.random() * 9000 + 1000);
+            
+            // Initialize room in storage
+            if (!gameState.rooms[gameState.roomCode]) {
+                gameState.rooms[gameState.roomCode] = {
+                    players: [],
+                    created: Date.now(),
+                    started: false
+                };
+            }
+            
+            // Show room UI
+            showRoomUI();
+            
+            showToast(`Room ${gameState.roomCode} created!`);
+        }
+
+        // Join Existing Room
+        function joinExistingRoom() {
+            const roomInput = document.getElementById('roomCodeInput');
+            const roomCode = roomInput.value.trim().toUpperCase();
+            
+            if (!roomCode) {
+                showToast('Please enter a room code!');
+                return;
+            }
+            
+            // Check if room exists (in real app, this would be server-side)
+            if (!gameState.rooms[roomCode]) {
+                // Create room if it doesn't exist (for demo purposes)
+                gameState.rooms[roomCode] = {
+                    players: [],
+                    created: Date.now(),
+                    started: false
+                };
+            }
+            
+            gameState.roomCode = roomCode;
+            
+            // Load existing players from room
+            if (gameState.rooms[roomCode].players.length > 0) {
+                gameState.players = [...gameState.rooms[roomCode].players];
+                updatePlayersList();
+            }
+            
+            // Show room UI
+            showRoomUI();
+            
+            showToast(`Joined room ${roomCode}!`);
+        }
+
+        // Show Room UI
+        function showRoomUI() {
+            // Hide room selection
+            document.getElementById('roomSelection').style.display = 'none';
+            
+            // Show room info
+            document.getElementById('roomInfo').style.display = 'block';
+            document.getElementById('roomCode').textContent = gameState.roomCode;
+            
+            // Show player setup
+            document.getElementById('playerSetup').style.display = 'block';
+            
+            // Show players list
+            document.getElementById('playersListContainer').style.display = 'block';
+            
+            // Update URL with room code (only if not in iframe)
+            try {
+                if (window.self === window.top) {
+                    const newUrl = `${window.location.pathname}?room=${gameState.roomCode}`;
+                    window.history.replaceState({}, '', newUrl);
+                }
+            } catch (e) {
+                // Silently fail if in sandboxed environment
+                console.log('Running in sandboxed environment - URL update skipped');
+            }
+        }
+
+        // Copy Invite Link
+        function copyInvite() {
+            // For sandboxed environment, just copy the room code
+            const isInIframe = window.self !== window.top;
+            const inviteText = isInIframe 
+                ? `Join my Mallard Duck Race! Room Code: ${gameState.roomCode}`
+                : `${window.location.origin}${window.location.pathname}?room=${gameState.roomCode}`;
+            
+            if (navigator.clipboard && window.isSecureContext) {
+                navigator.clipboard.writeText(inviteText).then(() => {
+                    showToast(isInIframe 
+                        ? `📋 Room code ${gameState.roomCode} copied!` 
+                        : '📋 Invite link copied! Share with friends.');
+                }).catch(() => {
+                    fallbackCopyInvite(inviteText);
+                });
+            } else {
+                fallbackCopyInvite(inviteText);
+            }
+        }
+
+        // Fallback copy for older browsers
+        function fallbackCopyInvite(text) {
+            const textArea = document.createElement('textarea');
+            textArea.value = text;
+            textArea.style.position = 'fixed';
+            textArea.style.left = '-999999px';
+            document.body.appendChild(textArea);
+            textArea.select();
+            
+            try {
+                document.execCommand('copy');
+                showToast('📋 Room code copied!');
+            } catch (err) {
+                showToast(`Room Code: ${gameState.roomCode}`);
+            }
+            
+            document.body.removeChild(textArea);
+        }
+
+        // Share Invite (using Web Share API)
+        function shareInvite() {
+            const isInIframe = window.self !== window.top;
+            const inviteUrl = isInIframe 
+                ? `Room Code: ${gameState.roomCode}`
+                : `${window.location.origin}${window.location.pathname}?room=${gameState.roomCode}`;
+            
+            const shareData = {
+                title: 'Mallard Duck Race',
+                text: `Join my duck race! Room code: ${gameState.roomCode}`,
+                url: isInIframe ? undefined : inviteUrl
+            };
+            
+            // Remove undefined URL for iframe environment
+            if (isInIframe) {
+                delete shareData.url;
+            }
+            
+            if (navigator.share) {
+                navigator.share(shareData)
+                    .then(() => showToast('Shared successfully!'))
+                    .catch((err) => {
+                        if (err.name !== 'AbortError') {
+                            copyInvite(); // Fallback to copy
+                        }
+                    });
+            } else {
+                // Fallback to copy
+                copyInvite();
+                showToast('Share not available. Room code copied instead!');
+            }
+        }
+
+        // Join Game
+        function joinGame() {
+            const nameInput = document.getElementById('duckNameInput');
+            const duckName = nameInput.value.trim();
+            
+            if (!duckName) {
+                showToast('Please name your duck!');
+                return;
+            }
+            
+            if (!gameState.roomCode) {
+                showToast('Please create or join a room first!');
+                return;
+            }
+            
+            if (gameState.players.some(p => p.name === duckName)) {
+                showToast('That name is already taken!');
+                return;
+            }
+            
+            // First player becomes host
+            const isFirstPlayer = gameState.players.length === 0;
+            
+            const player = {
+                id: Date.now(),
+                name: duckName,
+                isHost: isFirstPlayer,
+                isAI: false,
+                position: 0,
+                clicks: 0
+            };
+            
+            gameState.players.push(player);
+            gameState.currentPlayer = player;
+            gameState.isHost = isFirstPlayer;
+            
+            // Update room storage
+            if (gameState.rooms[gameState.roomCode]) {
+                gameState.rooms[gameState.roomCode].players = gameState.players;
+            }
+            
+            updatePlayersList();
+            
+            nameInput.value = '';
+            nameInput.disabled = true;
+            document.getElementById('joinBtn').disabled = true;
+            
+            if (isFirstPlayer) {
+                // Show admin panel for host
+                document.getElementById('adminPanel').style.display = 'block';
+                showToast('🎉 You are the HOST! You can start the race when ready.');
+                
+                // Add AI players after a moment for single player testing
+                setTimeout(() => {
+                    if (!gameState.raceStarted && gameState.players.length === 1) {
+                        addAIPlayer('Speedy', 2000);
+                    }
+                }, 2000);
+                
+                // Enable/disable start button based on player count
+                updateStartButton();
+            } else {
+                showToast('✅ Joined! Waiting for host to start...');
+                
+                // Simulate getting existing host info
+                simulateHostSync();
+            }
+        }
+
+        // Simulate Host Sync (in real app, this would be WebSocket)
+        function simulateHostSync() {
+            // Check if there's a host in the room
+            const host = gameState.players.find(p => p.isHost);
+            if (!host && gameState.players.length > 0) {
+                // Make first player the host if no host exists
+                gameState.players[0].isHost = true;
+                updatePlayersList();
+            }
+        }
+
+        // Update Start Button State
+        function updateStartButton() {
+            const startBtn = document.getElementById('startBtn');
+            if (startBtn && gameState.isHost) {
+                // Need at least 2 players to start
+                startBtn.disabled = gameState.players.length < 2;
+                if (gameState.players.length < 2) {
+                    startBtn.textContent = '🚀 Need 2+ Players';
+                } else {
+                    startBtn.textContent = `🚀 Start Race! (${gameState.players.length} players)`;
+                }
+            }
+        }
+
+        // Remove Last AI Player
+        function removeLastAI() {
+            const aiIndex = gameState.players.findIndex(p => p.isAI);
+            if (aiIndex !== -1) {
+                gameState.players.splice(aiIndex, 1);
+                updatePlayersList();
+                updateStartButton();
+                showToast('AI player removed');
+            } else {
+                showToast('No AI players to remove');
+            }
+        }
+
+        // Add AI Player
+        function addAIPlayer(name, speed) {
+            if (gameState.raceStarted) return;
+            
+            const aiPlayer = {
+                id: Date.now() + Math.random(),
+                name: name,
+                isHost: false,
+                isAI: true,
+                position: 0,
+                clicks: 0,
+                speed: speed // milliseconds between clicks
+            };
+            
+            gameState.players.push(aiPlayer);
+            updatePlayersList();
+        }
+
+        // Update Players List
+        function updatePlayersList() {
+            const list = document.getElementById('playersList');
+            list.innerHTML = '';
+            
+            gameState.players.forEach(player => {
+                const item = document.createElement('div');
+                item.className = 'player-item';
+                item.innerHTML = `
+                    <span class="player-name">${player.name}</span>
+                    <span style="display: flex; align-items: center; gap: 0.5rem;">
+                        ${player.isHost ? '<span class="host-badge">HOST</span>' : ''}
+                        ${player.isAI ? '<span style="color: #64748b; font-size: 0.8rem;">AI</span>' : ''}
+                        <span class="player-duck">🦆</span>
+                    </span>
+                `;
+                list.appendChild(item);
+            });
+            
+            // Update start button state if host
+            if (gameState.isHost) {
+                updateStartButton();
+            }
+        }
+
+        // Start Race
+        function startRace() {
+            if (!gameState.isHost) {
+                showToast('Only the host can start the race!');
+                return;
+            }
+            
+            if (gameState.players.length < 2) {
+                showToast('Need at least 2 players to start!');
+                return;
+            }
+            
+            gameState.raceStarted = true;
+            
+            // Hide lobby, show race
+            document.getElementById('lobbyScreen').style.display = 'none';
+            document.getElementById('raceScreen').style.display = 'block';
+            
+            // Setup race track
+            setupRaceTrack();
+            
+            // Start countdown
+            startCountdown();
+        }
+
+        // Setup Race Track
+        function setupRaceTrack() {
+            const track = document.getElementById('raceTrack');
+            track.innerHTML = '<div class="finish-line"></div><div class="finish-flag">🏁</div>';
+            
+            gameState.players.forEach((player, index) => {
+                const lane = document.createElement('div');
+                lane.className = 'race-lane';
+                lane.id = `lane-${player.id}`;
+                
+                const duck = document.createElement('div');
+                duck.className = 'duck-racer';
+                duck.id = `duck-${player.id}`;
+                duck.style.left = '10px';
+                
+                const label = document.createElement('div');
+                label.className = 'duck-label';
+                label.textContent = player.name;
+                
+                const duckEmoji = document.createElement('span');
+                duckEmoji.textContent = '🦆';
+                
+                duck.appendChild(label);
+                duck.appendChild(duckEmoji);
+                
+                lane.appendChild(duck);
+                track.appendChild(lane);
+            });
+            
+            // Calculate track width for finish line
+            setTimeout(() => {
+                const firstLane = document.querySelector('.race-lane');
+                if (firstLane) {
+                    gameState.trackWidth = firstLane.offsetWidth - 100; // Account for duck width and finish line
+                    // Ensure minimum track width
+                    gameState.trackWidth = Math.max(gameState.trackWidth, 400);
+                }
+            }, 100);
+        }
+
+        // Start Countdown
+        function startCountdown() {
+            const countdown = document.getElementById('countdown');
+            countdown.style.display = 'block';
+            
+            let count = 3;
+            countdown.textContent = count;
+            
+            const interval = setInterval(() => {
+                count--;
+                if (count > 0) {
+                    countdown.textContent = count;
+                    countdown.style.animation = 'none';
+                    setTimeout(() => countdown.style.animation = 'countdownPulse 1s ease', 10);
+                } else if (count === 0) {
+                    countdown.textContent = 'GO!';
+                    countdown.style.color = '#22c55e';
+                    setTimeout(() => {
+                        countdown.style.display = 'none';
+                        enableRacing();
+                    }, 500);
+                    clearInterval(interval);
+                }
+            }, 1000);
+        }
+
+        // Enable Racing
+        function enableRacing() {
+            gameState.raceFinished = false;
+            
+            // Setup click handler for current player
+            if (gameState.currentPlayer && !gameState.currentPlayer.isAI) {
+                const clickZone = document.getElementById('clickZone');
+                clickZone.addEventListener('click', handlePlayerClick);
+                clickZone.addEventListener('touchstart', handlePlayerClick);
+            }
+            
+            // Start AI players
+            gameState.players.forEach(player => {
+                if (player.isAI) {
+                    startAIPlayer(player);
+                }
+            });
+        }
+
+        // Handle Player Click
+        function handlePlayerClick(e) {
+            e.preventDefault();
+            
+            if (!gameState.currentPlayer || gameState.raceFinished) return;
+            
+            const player = gameState.currentPlayer;
+            player.clicks++;
+            player.position += 3; // Move 3 pixels per click
+            
+            moveDuck(player);
+            
+            // Visual feedback
+            const clickZone = document.getElementById('clickZone');
+            clickZone.classList.add('active');
+            setTimeout(() => clickZone.classList.remove('active'), 100);
+        }
+
+        // Move Duck
+        function moveDuck(player) {
+            const duck = document.getElementById(`duck-${player.id}`);
+            if (!duck) return;
+            
+            // Add bounce animation
+            duck.classList.add('bouncing');
+            setTimeout(() => duck.classList.remove('bouncing'), 200);
+            
+            // Ensure position doesn't exceed track width
+            const maxPosition = gameState.trackWidth || 800;
+            player.position = Math.min(player.position, maxPosition);
+            
+            // Move the duck
+            duck.style.left = `${player.position}px`;
+            
+            // Check for winner
+            if (player.position >= maxPosition && !gameState.raceFinished) {
+                gameState.raceFinished = true;
+                declareWinner(player);
+            }
+        }
+
+        // Start AI Player
+        function startAIPlayer(aiPlayer) {
+            if (!aiPlayer || !aiPlayer.isAI) return;
+            
+            const aiInterval = setInterval(() => {
+                if (gameState.raceFinished) {
+                    clearInterval(aiInterval);
+                    return;
+                }
+                
+                aiPlayer.clicks++;
+                aiPlayer.position += Math.random() * 4 + 2; // Random speed between 2-6 pixels
+                moveDuck(aiPlayer);
+                
+                if (aiPlayer.position >= (gameState.trackWidth || 800)) {
+                    clearInterval(aiInterval);
+                }
+            }, aiPlayer.speed / 10);
+        }
+
+        // Declare Winner
+        function declareWinner(winner) {
+            // Update leaderboard
+            if (!gameState.leaderboard[winner.name]) {
+                gameState.leaderboard[winner.name] = 0;
+            }
+            gameState.leaderboard[winner.name]++;
+            
+            // Show winner overlay
+            const overlay = document.getElementById('winnerOverlay');
+            const winnerName = document.getElementById('winnerName');
+            winnerName.textContent = `${winner.name} wins with ${winner.clicks} clicks!`;
+            overlay.style.display = 'flex';
+            
+            // Update and show leaderboard
+            updateLeaderboard();
+            document.getElementById('leaderboard').style.display = 'block';
+            
+            // Confetti effect (simple version)
+            createConfetti();
+        }
+
+        // Create Confetti Effect
+        function createConfetti() {
+            const colors = ['#22c55e', '#0891b2', '#fbbf24', '#ef4444', '#a855f7'];
+            
+            for (let i = 0; i < 50; i++) {
+                const confetti = document.createElement('div');
+                confetti.style.position = 'fixed';
+                confetti.style.width = '10px';
+                confetti.style.height = '10px';
+                confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.left = Math.random() * 100 + '%';
+                confetti.style.top = '-10px';
+                confetti.style.borderRadius = '50%';
+                confetti.style.zIndex = '500';
+                confetti.style.pointerEvents = 'none';
+                
+                document.body.appendChild(confetti);
+                
+                // Animate falling
+                let pos = -10;
+                let horizontalPos = parseFloat(confetti.style.left);
+                let horizontalSpeed = (Math.random() - 0.5) * 2;
+                let speed = Math.random() * 3 + 2;
+                
+                const fall = setInterval(() => {
+                    pos += speed;
+                    horizontalPos += horizontalSpeed;
+                    confetti.style.top = pos + 'px';
+                    confetti.style.left = horizontalPos + '%';
+                    confetti.style.transform = `rotate(${pos * 3}deg)`;
+                    
+                    if (pos > window.innerHeight) {
+                        clearInterval(fall);
+                        confetti.remove();
+                    }
+                }, 20);
+            }
+        }
+
+        // Update Leaderboard
+        function updateLeaderboard() {
+            const list = document.getElementById('leaderboardList');
+            list.innerHTML = '';
+            
+            // Sort leaderboard
+            const sorted = Object.entries(gameState.leaderboard)
+                .sort((a, b) => b[1] - a[1])
+                .slice(0, 10); // Top 10
+            
+            sorted.forEach((entry, index) => {
+                const [name, wins] = entry;
+                const item = document.createElement('li');
+                item.className = 'leaderboard-item';
+                
+                let rankClass = '';
+                let rankSymbol = `#${index + 1}`;
+                if (index === 0) {
+                    rankClass = 'gold';
+                    rankSymbol = '🥇';
+                } else if (index === 1) {
+                    rankClass = 'silver';
+                    rankSymbol = '🥈';
+                } else if (index === 2) {
+                    rankClass = 'bronze';
+                    rankSymbol = '🥉';
+                }
+                
+                item.innerHTML = `
+                    <span class="leaderboard-rank ${rankClass}">${rankSymbol}</span>
+                    <span class="leaderboard-name">${name}</span>
+                    <span class="leaderboard-wins">${wins} ${wins === 1 ? 'win' : 'wins'}</span>
+                `;
+                
+                list.appendChild(item);
+            });
+        }
+
+        // Reset Game
+        function resetGame() {
+            // Hide winner overlay
+            document.getElementById('winnerOverlay').style.display = 'none';
+            
+            // Reset player positions
+            gameState.players.forEach(player => {
+                player.position = 0;
+                player.clicks = 0;
+            });
+            
+            // Show lobby screen with room UI
+            document.getElementById('lobbyScreen').style.display = 'block';
+            document.getElementById('raceScreen').style.display = 'none';
+            
+            // Keep room UI visible
+            document.getElementById('roomSelection').style.display = 'none';
+            document.getElementById('roomInfo').style.display = 'block';
+            document.getElementById('playerSetup').style.display = 'block';
+            document.getElementById('playersListContainer').style.display = 'block';
+            
+            // Reset race state
+            gameState.raceStarted = false;
+            gameState.raceFinished = false;
+            
+            // Remove click handlers
+            const clickZone = document.getElementById('clickZone');
+            const newClickZone = clickZone.cloneNode(true);
+            clickZone.parentNode.replaceChild(newClickZone, clickZone);
+            
+            // Keep players who joined
+            updatePlayersList();
+            
+            // Show admin panel if host
+            if (gameState.isHost) {
+                document.getElementById('adminPanel').style.display = 'block';
+            }
+            
+            // Re-enable input for new players
+            if (!gameState.currentPlayer) {
+                document.getElementById('duckNameInput').disabled = false;
+                document.getElementById('joinBtn').disabled = false;
+            }
+        }
+
+        // Show Toast Notification
+        function showToast(message, duration = 3000) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.classList.add('show');
+            
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, duration);
+        }
+
+        // Prevent double-tap zoom on mobile
+        let lastTouchEnd = 0;
+        document.addEventListener('touchend', (e) => {
+            const now = Date.now();
+            if (now - lastTouchEnd <= 300) {
+                e.preventDefault();
+            }
+            lastTouchEnd = now;
+        }, false);
+
+        // Add keyboard support for accessibility
+        document.addEventListener('keydown', (e) => {
+            if (gameState.raceStarted && !gameState.raceFinished && gameState.currentPlayer) {
+                if (e.key === ' ' || e.key === 'Enter') {
+                    e.preventDefault();
+                    handlePlayerClick(e);
+                }
+            }
+        });
+    </script>
+</body>
+</html>
