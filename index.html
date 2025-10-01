@@ -97,8 +97,8 @@
             .card-body p { font-size: 1.1em; } 
             .section-title { font-size: 2.2em; } 
             .storybook-section { max-width: 500px; }
-            .menu-content { gap: 15px; }
-            .menu-link { font-size: 0.9em; padding: 8px 12px; }
+            .menu-content { gap: 10px; }
+            .menu-link { font-size: 0.85em; padding: 6px 10px; }
             .menu { padding: 10px 0; }
             .logo { width: 150px; height: 150px; }
         }
@@ -113,6 +113,7 @@
             <a href="#wallets" class="menu-link">Wallets</a>
             <a href="#story" class="menu-link">Story</a>
             <a href="#chart" class="menu-link">Chart</a>
+            <a href="#nft" class="menu-link">NFT</a>
             <a href="#socials" class="menu-link">Socials</a>
         </div>
     </nav>
@@ -234,6 +235,35 @@
         <h2 class="section-title">📈 Live Chart</h2>
         <div id="dexscreener-embed">
             <iframe src="https://dexscreener.com/xrpl/4D414C4C41524400000000000000000000000000.raaoPU9crbLGEFCMyh8moNH4gipsHJY3wN_XRP?embed=1&loadChartSettings=0&chartLeftToolbar=0&chartDefaultOnMobile=1&chartTheme=dark&theme=dark&chartStyle=0&chartType=usd&interval=15" loading="lazy"></iframe>
+        </div>
+    </div>
+
+    <div class="buy-section" id="nft">
+        <h2 class="section-title">🎨 NFT Whitelist Mint</h2>
+        <div style="max-width: 800px; margin: 0 auto;">
+            <div class="buy-card" style="padding: 50px 35px;">
+                <h3 style="font-size: 2em; margin-bottom: 20px;">Whitelist Mint Event</h3>
+                <p style="font-size: 1.3em; margin-bottom: 30px;">📅 October 5, 2025 at 5:00 PM UTC</p>
+                <div id="countdown" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; margin: 40px 0;">
+                    <div style="background: rgba(156, 39, 176, 0.1); padding: 20px; border-radius: 15px;">
+                        <div id="days" style="font-size: 3em; font-weight: bold; color: #6a1b9a;">00</div>
+                        <div style="font-size: 1em; color: #7b1fa2; margin-top: 10px;">Days</div>
+                    </div>
+                    <div style="background: rgba(156, 39, 176, 0.1); padding: 20px; border-radius: 15px;">
+                        <div id="hours" style="font-size: 3em; font-weight: bold; color: #6a1b9a;">00</div>
+                        <div style="font-size: 1em; color: #7b1fa2; margin-top: 10px;">Hours</div>
+                    </div>
+                    <div style="background: rgba(156, 39, 176, 0.1); padding: 20px; border-radius: 15px;">
+                        <div id="minutes" style="font-size: 3em; font-weight: bold; color: #6a1b9a;">00</div>
+                        <div style="font-size: 1em; color: #7b1fa2; margin-top: 10px;">Minutes</div>
+                    </div>
+                    <div style="background: rgba(156, 39, 176, 0.1); padding: 20px; border-radius: 15px;">
+                        <div id="seconds" style="font-size: 3em; font-weight: bold; color: #6a1b9a;">00</div>
+                        <div style="font-size: 1em; color: #7b1fa2; margin-top: 10px;">Seconds</div>
+                    </div>
+                </div>
+                <p style="font-size: 1.2em; color: #7b1fa2; margin-top: 30px;">Get ready to mint exclusive Mallard NFTs!</p>
+            </div>
         </div>
     </div>
 
@@ -462,6 +492,35 @@
 
         setInterval(loadXRPLData, 60000);
         setInterval(loadMarketCap, 60000);
+
+        // Countdown Timer for NFT Mint
+        const mintDate = new Date('2025-10-05T17:00:00Z').getTime();
+        
+        function updateCountdown() {
+            const now = new Date().getTime();
+            const distance = mintDate - now;
+            
+            if (distance < 0) {
+                document.getElementById('days').textContent = '00';
+                document.getElementById('hours').textContent = '00';
+                document.getElementById('minutes').textContent = '00';
+                document.getElementById('seconds').textContent = '00';
+                return;
+            }
+            
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+            
+            document.getElementById('days').textContent = String(days).padStart(2, '0');
+            document.getElementById('hours').textContent = String(hours).padStart(2, '0');
+            document.getElementById('minutes').textContent = String(minutes).padStart(2, '0');
+            document.getElementById('seconds').textContent = String(seconds).padStart(2, '0');
+        }
+        
+        updateCountdown();
+        setInterval(updateCountdown, 1000);
 
         // Smooth scroll for menu links
         document.querySelectorAll('.menu-link').forEach(link => {
