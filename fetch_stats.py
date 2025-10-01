@@ -54,7 +54,6 @@ def fetch_token_data():
         
     except requests.exceptions.RequestException as e:
         print(f'Error fetching data: {e}')
-        # Create a placeholder file to prevent errors
         stats = {
             'trustlines': 0,
             'holders': 0,
@@ -70,21 +69,17 @@ def fetch_token_data():
 
 def calculate_market_cap(token_data):
     """Calculate market cap from token data"""
-    # If the API provides market cap directly, use it
     if 'marketCap' in token_data:
         return float(token_data['marketCap'])
     
-    # Otherwise, calculate from price and supply
     if 'price' in token_data and 'supply' in token_data:
         price = float(token_data['price'])
         supply = float(token_data['supply'])
         return price * supply
     
-    # Try to get price in XRP
     if 'priceInXrp' in token_data and 'supply' in token_data:
         price_xrp = float(token_data['priceInXrp'])
         supply = float(token_data['supply'])
-        # You can multiply by XRP price here if needed
         return price_xrp * supply
     
     return 0
