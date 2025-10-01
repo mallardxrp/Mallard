@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>$MALLARD - The Duck That Became a Legend</title>
+    <link rel="preconnect" href="https://api.dexscreener.com">
+    <link rel="preconnect" href="https://xrplcluster.com">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { 
@@ -24,18 +26,18 @@
         h1 { font-size: 4em; color: #ffffff; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8); margin-bottom: 15px; font-weight: bold; letter-spacing: 3px; }
         .banner { width: auto; max-width: 95%; height: auto; margin: 30px auto 40px; display: block; filter: drop-shadow(0 4px 15px rgba(0, 0, 0, 0.2)); opacity: 0.9; }
         .stats-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 25px; padding: 50px 20px; max-width: 1400px; margin: 0 auto; }
-        .stat-card { background: white; padding: 30px; border-radius: 20px; border: 3px solid #ce93d8; text-align: center; box-shadow: 0 6px 25px rgba(156, 39, 176, 0.2); transition: all 0.3s; }
+        .stat-card { background: white; padding: 30px; border-radius: 20px; border: 3px solid #ce93d8; text-align: center; box-shadow: 0 6px 25px rgba(156, 39, 176, 0.2); transition: transform 0.3s, box-shadow 0.3s; will-change: transform; }
         .stat-card:hover { transform: translateY(-5px); box-shadow: 0 10px 35px rgba(156, 39, 176, 0.3); }
         .stat-label { font-size: 1em; color: #7b1fa2; margin-bottom: 15px; font-weight: 600; }
         .stat-value { font-size: 2em; font-weight: bold; color: #6a1b9a; }
         .buy-section { max-width: 1200px; margin: 50px auto; padding: 0 20px; }
         .section-title { text-align: center; font-size: 3em; color: #ffffff; margin-bottom: 40px; text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.5); font-weight: bold; }
         .buy-options { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 25px; margin-bottom: 50px; }
-        .buy-card { background: white; padding: 35px; border-radius: 20px; border: 3px solid #ce93d8; text-align: center; transition: all 0.3s; box-shadow: 0 6px 25px rgba(156, 39, 176, 0.2); }
+        .buy-card { background: white; padding: 35px; border-radius: 20px; border: 3px solid #ce93d8; text-align: center; transition: transform 0.3s, box-shadow 0.3s; box-shadow: 0 6px 25px rgba(156, 39, 176, 0.2); will-change: transform; }
         .buy-card:hover { transform: translateY(-8px); box-shadow: 0 12px 40px rgba(156, 39, 176, 0.35); }
         .buy-card h3 { color: #6a1b9a; margin-bottom: 15px; font-size: 1.5em; }
         .buy-card p { color: #7b1fa2; margin-bottom: 25px; font-size: 1em; }
-        .buy-btn { display: inline-block; padding: 14px 35px; background: linear-gradient(135deg, #ab47bc, #ce93d8); border: none; border-radius: 30px; color: white; font-weight: bold; text-decoration: none; transition: all 0.3s; font-size: 1.1em; }
+        .buy-btn { display: inline-block; padding: 14px 35px; background: linear-gradient(135deg, #ab47bc, #ce93d8); border: none; border-radius: 30px; color: white; font-weight: bold; text-decoration: none; transition: transform 0.3s, background 0.3s; font-size: 1.1em; }
         .buy-btn:hover { background: linear-gradient(135deg, #9c27b0, #ba68c8); transform: scale(1.05); }
         .storybook-section { max-width: 900px; margin: 80px auto; padding: 0 20px; }
         .cards-container { position: relative; height: 700px; display: flex; flex-direction: column; align-items: center; }
@@ -53,10 +55,11 @@
             padding: 40px; 
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3); 
             user-select: none; 
-            transition: transform 0.5s ease, opacity 0.5s ease, z-index 0s;
+            transition: transform 0.5s ease, opacity 0.5s ease;
             display: flex; 
             flex-direction: column;
             cursor: pointer;
+            will-change: transform, opacity;
         }
         .card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; padding-bottom: 20px; border-bottom: 1px solid rgba(255, 255, 255, 0.2); }
         .card-title { font-size: 2.2em; font-weight: bold; color: #000000; text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.3); }
@@ -72,7 +75,7 @@
         #dexscreener-embed iframe { position: absolute; width: 100%; height: 100%; top: 0; left: 0; border: 0; }
         .footer { text-align: center; padding: 50px 20px; background: rgba(186, 104, 200, 0.15); border-top: 3px solid #ab47bc; margin-top: 80px; }
         .socials { display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; margin-top: 30px; }
-        .social-btn { padding: 15px 35px; background: linear-gradient(135deg, #ab47bc, #ce93d8); border: none; border-radius: 30px; color: white; font-weight: bold; text-decoration: none; transition: all 0.3s; box-shadow: 0 4px 20px rgba(171, 71, 188, 0.4); font-size: 1.1em; }
+        .social-btn { padding: 15px 35px; background: linear-gradient(135deg, #ab47bc, #ce93d8); border: none; border-radius: 30px; color: white; font-weight: bold; text-decoration: none; transition: transform 0.3s, box-shadow 0.3s, background 0.3s; box-shadow: 0 4px 20px rgba(171, 71, 188, 0.4); font-size: 1.1em; }
         .social-btn:hover { transform: translateY(-3px); box-shadow: 0 6px 30px rgba(171, 71, 188, 0.6); background: linear-gradient(135deg, #9c27b0, #ba68c8); }
         .token-address { background: white; padding: 20px; border-radius: 15px; margin: 20px auto; max-width: 650px; word-break: break-all; font-family: monospace; font-size: 1em; color: #6a1b9a; border: 3px solid #ce93d8; box-shadow: 0 4px 20px rgba(156, 39, 176, 0.2); }
         @media (max-width: 768px) { 
@@ -88,27 +91,27 @@
 </head>
 <body>
     <div class="header">
-        <img src="https://github.com/mallardxrp/Mallard/raw/main/new%20mallard.jpg" alt="Mallard Logo" class="logo">
+        <img src="https://github.com/mallardxrp/Mallard/raw/main/new%20mallard.jpg" alt="Mallard Logo" class="logo" loading="lazy">
         <h1>$MALLARD</h1>
-        <img src="https://github.com/mallardxrp/Mallard/raw/main/new%20banner%20(2).png" alt="Mallard Banner" class="banner">
+        <img src="https://github.com/mallardxrp/Mallard/raw/main/new%20banner%20(2).png" alt="Mallard Banner" class="banner" loading="lazy">
     </div>
 
     <div class="stats-container">
         <div class="stat-card">
-            <div class="stat-label">?? Market Cap</div>
-            <div class="stat-value" id="marketcap">Loading...</div>
+            <div class="stat-label">💰 Market Cap</div>
+            <div class="stat-value" id="marketcap">...</div>
         </div>
         <div class="stat-card">
-            <div class="stat-label">?? Trustlines</div>
-            <div class="stat-value" id="trustlines">Loading...</div>
+            <div class="stat-label">🔗 Trustlines</div>
+            <div class="stat-value" id="trustlines">...</div>
         </div>
         <div class="stat-card">
-            <div class="stat-label">?? Holders</div>
-            <div class="stat-value" id="holders">Loading...</div>
+            <div class="stat-label">👥 Holders</div>
+            <div class="stat-value" id="holders">...</div>
         </div>
         <div class="stat-card">
-            <div class="stat-label">?? Circulating Supply</div>
-            <div class="stat-value" id="supply">Loading...</div>
+            <div class="stat-label">📊 Circulating Supply</div>
+            <div class="stat-value" id="supply">...</div>
         </div>
     </div>
 
@@ -118,23 +121,23 @@
             <div class="buy-card">
                 <h3>Horizon XRPL</h3>
                 <p>Leading XRPL DEX Platform</p>
-                <a href="https://horizon.xrplevm.org" class="buy-btn" target="_blank">Trade Now</a>
+                <a href="https://horizon.xrplevm.org" class="buy-btn" target="_blank" rel="noopener">Trade Now</a>
             </div>
             <div class="buy-card">
                 <h3>FirstLedger</h3>
                 <p>XRPL Trading Platform</p>
-                <a href="https://firstledger.net" class="buy-btn" target="_blank">Trade Now</a>
+                <a href="https://firstledger.net" class="buy-btn" target="_blank" rel="noopener">Trade Now</a>
             </div>
             <div class="buy-card">
                 <h3>XMagnetic</h3>
                 <p>XRPL Exchange</p>
-                <a href="https://xmagnetic.org" class="buy-btn" target="_blank">Trade Now</a>
+                <a href="https://xmagnetic.org" class="buy-btn" target="_blank" rel="noopener">Trade Now</a>
             </div>
         </div>
     </div>
 
     <div class="storybook-section">
-        <h2 class="section-title">?? The Mallard Story</h2>
+        <h2 class="section-title">🦆 The Mallard Story</h2>
         <div class="cards-container">
             <div class="card-stack" id="cardStack">
                 <div class="story-card" id="card0">
@@ -175,71 +178,67 @@
                     <div class="card-body">
                         <p>Three ducks across three posts. Old MacDonald, Telegram emoji, Music video.</p>
                         <p>321... 123. David's ducks are in a row. The duck is loose.</p>
-                        <div class="card-highlight">?? Welcome to the Movement ??</div>
+                        <div class="card-highlight">🦆 Welcome to the Movement 🦆</div>
                     </div>
                 </div>
             </div>
             <div class="swipe-instructions">
-                <span>?? Click the cards or use arrow keys to navigate ??</span>
+                <span>👆 Click the cards or use arrow keys to navigate 👆</span>
             </div>
         </div>
     </div>
 
     <div class="chart-section">
-        <h2 class="section-title">?? Live Chart</h2>
+        <h2 class="section-title">📈 Live Chart</h2>
         <div id="dexscreener-embed">
-            <iframe src="https://dexscreener.com/xrpl/4D414C4C41524400000000000000000000000000.raaoPU9crbLGEFCMyh8moNH4gipsHJY3wN_XRP?embed=1&loadChartSettings=0&chartLeftToolbar=0&chartDefaultOnMobile=1&chartTheme=dark&theme=dark&chartStyle=0&chartType=usd&interval=15"></iframe>
+            <iframe src="https://dexscreener.com/xrpl/4D414C4C41524400000000000000000000000000.raaoPU9crbLGEFCMyh8moNH4gipsHJY3wN_XRP?embed=1&loadChartSettings=0&chartLeftToolbar=0&chartDefaultOnMobile=1&chartTheme=dark&theme=dark&chartStyle=0&chartType=usd&interval=15" loading="lazy"></iframe>
         </div>
     </div>
 
     <div class="footer">
-        <h3 style="color: #ffffff; font-size: 2em; margin-bottom: 30px; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);">Join the Flock ??</h3>
+        <h3 style="color: #ffffff; font-size: 2em; margin-bottom: 30px; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);">Join the Flock 🦆</h3>
         <div class="socials">
-            <a href="https://t.me/mallardcto" class="social-btn" target="_blank">?? Telegram</a>
-            <a href="https://x.com/mallardxrp" class="social-btn" target="_blank">?? Twitter/X</a>
-            <a href="https://www.tiktok.com/@mallardxrp" class="social-btn" target="_blank">?? TikTok</a>
-            <a href="https://www.youtube.com/@mallardxrp" class="social-btn" target="_blank">?? YouTube</a>
-            <a href="https://www.instagram.com/mallardxrp" class="social-btn" target="_blank">?? Instagram</a>
-            <a href="https://linktr.ee/mallardxrp" class="social-btn" target="_blank">?? Linktree</a>
-            <a href="https://xrpscan.com/account/raaoPU9crbLGEFCMyh8moNH4gipsHJY3wN" class="social-btn" target="_blank">?? XRPScan</a>
+            <a href="https://t.me/mallardcto" class="social-btn" target="_blank" rel="noopener">💬 Telegram</a>
+            <a href="https://x.com/mallardxrp" class="social-btn" target="_blank" rel="noopener">🐦 Twitter/X</a>
+            <a href="https://www.tiktok.com/@mallardxrp" class="social-btn" target="_blank" rel="noopener">🎵 TikTok</a>
+            <a href="https://www.youtube.com/@mallardxrp" class="social-btn" target="_blank" rel="noopener">📺 YouTube</a>
+            <a href="https://www.instagram.com/mallardxrp" class="social-btn" target="_blank" rel="noopener">📸 Instagram</a>
+            <a href="https://linktr.ee/mallardxrp" class="social-btn" target="_blank" rel="noopener">🔗 Linktree</a>
+            <a href="https://xrpscan.com/account/raaoPU9crbLGEFCMyh8moNH4gipsHJY3wN" class="social-btn" target="_blank" rel="noopener">🔍 XRPScan</a>
         </div>
         <h3 style="color: #ffffff; font-size: 2em; margin-bottom: 20px; margin-top: 50px; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);">Token Address</h3>
         <div class="token-address">raaoPU9crbLGEFCMyh8moNH4gipsHJY3wN</div>
         <p style="margin-top: 20px; color: #7b1fa2; font-weight: 600;">Contract: 4D414C4C41524400000000000000000000000000</p>
-        <p style="margin-top: 30px; font-size: 1em; color: #7b1fa2;">© 2025 Mallard | The Duck That Became a Legend ??</p>
+        <p style="margin-top: 30px; font-size: 1em; color: #7b1fa2;">© 2025 Mallard | The Duck That Became a Legend 🦆</p>
     </div>
 
     <script>
-        // Global variables
         const MALLARD_ISSUER = 'raaoPU9crbLGEFCMyh8moNH4gipsHJY3wN';
         const MALLARD_CURRENCY = '4D414C4C41524400000000000000000000000000';
         let currentCard = 0;
         const totalCards = 4;
+        const cards = [];
 
-        // Story Card Navigation - FIXED
+        // Cache card elements
+        for (let i = 0; i < totalCards; i++) {
+            cards.push(document.getElementById('card' + i));
+        }
+
+        // Optimized card update with RAF
         function updateCards() {
-            for (let i = 0; i < totalCards; i++) {
-                const card = document.getElementById('card' + i);
-                if (!card) continue;
-                
-                if (i === currentCard) {
-                    card.style.zIndex = '10';
-                    card.style.opacity = '1';
-                    card.style.transform = 'scale(1) translateY(0)';
-                } else if (i === (currentCard + 1) % totalCards) {
-                    card.style.zIndex = '8';
-                    card.style.opacity = '0.7';
-                    card.style.transform = 'scale(0.95) translateY(15px)';
-                } else if (i === (currentCard + 2) % totalCards) {
-                    card.style.zIndex = '6';
-                    card.style.opacity = '0.4';
-                    card.style.transform = 'scale(0.90) translateY(30px)';
-                } else {
-                    card.style.zIndex = '4';
-                    card.style.opacity = '0.2';
-                    card.style.transform = 'scale(0.85) translateY(45px)';
-                }
-            }
+            requestAnimationFrame(() => {
+                cards.forEach((card, i) => {
+                    if (i === currentCard) {
+                        card.style.cssText = 'z-index: 10; opacity: 1; transform: scale(1) translateY(0)';
+                    } else if (i === (currentCard + 1) % totalCards) {
+                        card.style.cssText = 'z-index: 8; opacity: 0.7; transform: scale(0.95) translateY(15px)';
+                    } else if (i === (currentCard + 2) % totalCards) {
+                        card.style.cssText = 'z-index: 6; opacity: 0.4; transform: scale(0.90) translateY(30px)';
+                    } else {
+                        card.style.cssText = 'z-index: 4; opacity: 0.2; transform: scale(0.85) translateY(45px)';
+                    }
+                });
+            });
         }
 
         function nextCard() {
@@ -252,40 +251,36 @@
             updateCards();
         }
 
-        // Click handler
-        document.getElementById('cardStack').onclick = function(e) {
-            const rect = this.getBoundingClientRect();
-            const x = e.clientX - rect.left;
-            if (x < rect.width / 2) {
-                prevCard();
-            } else {
-                nextCard();
-            }
+        const stack = document.getElementById('cardStack');
+        
+        // Optimized click handler
+        stack.onclick = e => {
+            const rect = stack.getBoundingClientRect();
+            (e.clientX - rect.left < rect.width / 2) ? prevCard() : nextCard();
         };
 
         // Keyboard handler
-        document.onkeydown = function(e) {
+        document.onkeydown = e => {
             if (e.key === 'ArrowLeft') prevCard();
-            if (e.key === 'ArrowRight') nextCard();
+            else if (e.key === 'ArrowRight') nextCard();
         };
 
         // Touch handler
         let touchStartX = 0;
-        const stack = document.getElementById('cardStack');
-        stack.ontouchstart = function(e) {
-            touchStartX = e.touches[0].clientX;
-        };
-        stack.ontouchend = function(e) {
-            const touchEndX = e.changedTouches[0].clientX;
-            if (touchStartX - touchEndX > 50) nextCard();
-            if (touchEndX - touchStartX > 50) prevCard();
+        stack.ontouchstart = e => touchStartX = e.touches[0].clientX;
+        stack.ontouchend = e => {
+            const diff = e.changedTouches[0].clientX - touchStartX;
+            if (Math.abs(diff) > 50) diff > 0 ? prevCard() : nextCard();
         };
 
-        // Initialize
         updateCards();
 
-        // XRPL Data - Fixed circulating supply calculation
+        // XRPL data fetch with FULL pagination
+        let xrplController;
         async function loadXRPLData() {
+            if (xrplController) xrplController.abort();
+            xrplController = new AbortController();
+
             try {
                 const endpoints = [
                     'https://xrplcluster.com',
@@ -296,13 +291,14 @@
                 let allLines = [];
                 let success = false;
                 
-                // Try endpoints and paginate
+                // Try each endpoint with full pagination
                 for (const endpoint of endpoints) {
                     try {
                         let marker = undefined;
                         let hasMore = true;
                         allLines = [];
                         
+                        // Fetch ALL pages
                         while (hasMore) {
                             const request = {
                                 method: 'account_lines',
@@ -318,7 +314,8 @@
                             const response = await fetch(endpoint, {
                                 method: 'POST',
                                 headers: {'Content-Type': 'application/json'},
-                                body: JSON.stringify(request)
+                                body: JSON.stringify(request),
+                                signal: xrplController.signal
                             });
                             
                             const data = await response.json();
@@ -340,67 +337,87 @@
                 }
                 
                 if (!success || allLines.length === 0) {
-                    throw new Error('Failed to fetch data');
+                    throw new Error('Failed to fetch');
                 }
                 
-                // Calculate stats
+                // Calculate stats - FROM ISSUER PERSPECTIVE
                 const trustlines = allLines.length;
-                const holders = allLines.filter(l => Math.abs(parseFloat(l.balance || 0)) > 0.01).length;
+                // Holders = trustlines with actual balance (not just set up)
+                const holders = allLines.filter(l => {
+                    const bal = parseFloat(l.balance || 0);
+                    return Math.abs(bal) > 0;
+                }).length;
                 
-                // Circulating supply: sum of negative balances (tokens in circulation from issuer's perspective)
+                // Circulating supply: sum of NEGATIVE balances (tokens held by users from issuer's view)
                 const supply = allLines.reduce((sum, l) => {
-                    const balance = parseFloat(l.balance || 0);
-                    // Issuer sees negative when tokens are held by users
-                    return sum + (balance < 0 ? Math.abs(balance) : 0);
+                    const bal = parseFloat(l.balance || 0);
+                    return sum + (bal < 0 ? Math.abs(bal) : 0);
                 }, 0);
                 
                 document.getElementById('trustlines').textContent = trustlines.toLocaleString();
                 document.getElementById('holders').textContent = holders.toLocaleString();
                 
-                let supplyText;
-                if (supply >= 1e9) supplyText = (supply / 1e9).toFixed(2) + 'B';
-                else if (supply >= 1e6) supplyText = (supply / 1e6).toFixed(2) + 'M';
-                else if (supply >= 1e3) supplyText = (supply / 1e3).toFixed(2) + 'K';
-                else supplyText = supply.toFixed(0);
+                const supplyText = supply >= 1e9 ? (supply / 1e9).toFixed(2) + 'B' :
+                                  supply >= 1e6 ? (supply / 1e6).toFixed(2) + 'M' :
+                                  supply >= 1e3 ? (supply / 1e3).toFixed(2) + 'K' :
+                                  supply.toFixed(0);
                 
                 document.getElementById('supply').textContent = supplyText;
                 
             } catch (err) {
-                document.getElementById('trustlines').textContent = 'Retry...';
-                document.getElementById('holders').textContent = 'Retry...';
-                document.getElementById('supply').textContent = 'Retry...';
-                setTimeout(loadXRPLData, 5000);
+                if (err.name !== 'AbortError') {
+                    document.getElementById('trustlines').textContent = 'Retry...';
+                    document.getElementById('holders').textContent = 'Retry...';
+                    document.getElementById('supply').textContent = 'Retry...';
+                    setTimeout(loadXRPLData, 5000);
+                }
             }
         }
 
-        // Market Cap
+        // Optimized market cap fetch
+        let mcController;
         async function loadMarketCap() {
+            if (mcController) mcController.abort();
+            mcController = new AbortController();
+
             try {
-                const url = `https://api.dexscreener.com/latest/dex/search/?q=MALLARD+XRPL`;
-                const response = await fetch(url);
+                const response = await fetch(`https://api.dexscreener.com/latest/dex/search/?q=MALLARD+XRPL`, {
+                    signal: mcController.signal
+                });
                 const data = await response.json();
                 
                 const pair = data.pairs?.find(p => p.chainId === 'xrpl' || p.baseToken?.address?.includes(MALLARD_ISSUER));
                 if (pair) {
                     const mc = pair.fdv || pair.marketCap;
                     if (mc > 0) {
-                        let text;
-                        if (mc >= 1e6) text = '$' + (mc / 1e6).toFixed(2) + 'M';
-                        else if (mc >= 1e3) text = '$' + (mc / 1e3).toFixed(2) + 'K';
-                        else text = '$' + mc.toFixed(2);
+                        const text = mc >= 1e6 ? '$' + (mc / 1e6).toFixed(2) + 'M' :
+                                    mc >= 1e3 ? '$' + (mc / 1e3).toFixed(2) + 'K' :
+                                    '$' + mc.toFixed(2);
                         document.getElementById('marketcap').textContent = text;
                         return;
                     }
                 }
-                document.getElementById('marketcap').textContent = 'Coming Soon';
+                document.getElementById('marketcap').textContent = 'Soon';
             } catch (err) {
-                document.getElementById('marketcap').textContent = 'Coming Soon';
+                if (err.name !== 'AbortError') {
+                    document.getElementById('marketcap').textContent = 'Soon';
+                }
             }
         }
 
-        // Load data
-        loadXRPLData();
-        loadMarketCap();
+        // Load data on idle
+        if ('requestIdleCallback' in window) {
+            requestIdleCallback(() => {
+                loadXRPLData();
+                loadMarketCap();
+            });
+        } else {
+            setTimeout(() => {
+                loadXRPLData();
+                loadMarketCap();
+            }, 100);
+        }
+
         setInterval(loadXRPLData, 60000);
         setInterval(loadMarketCap, 60000);
     </script>
