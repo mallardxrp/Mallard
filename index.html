@@ -21,10 +21,18 @@
             50% { background-position: 100% 50%; }
             100% { background-position: 0% 50%; }
         }
-        .header { text-align: center; padding: 60px 20px; background: rgba(186, 104, 200, 0.15); }
+        .header { text-align: center; padding: 60px 20px; background: rgba(186, 104, 200, 0.15); padding-top: 100px; }
         .logo { width: 180px; height: 180px; border-radius: 50%; margin: 0 auto 30px; border: 5px solid #9c27b0; box-shadow: 0 8px 40px rgba(156, 39, 176, 0.4); object-fit: cover; }
         h1 { font-size: 4em; color: #ffffff; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8); margin-bottom: 15px; font-weight: bold; letter-spacing: 3px; }
-        .banner { width: auto; max-width: 95%; height: auto; margin: 30px auto 40px; display: block; filter: drop-shadow(0 4px 15px rgba(0, 0, 0, 0.2)); opacity: 0.9; }
+        .banner { width: auto; max-width: 95%; height: auto; margin: 30px auto 40px; display: block; filter: drop-shadow(0 4px 15px rgba(0, 0, 0, 0.2)); opacity: 0.9; animation: float 3s ease-in-out infinite; }
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+        .menu { position: fixed; top: 0; left: 0; width: 100%; background: rgba(156, 39, 176, 0.85); backdrop-filter: blur(10px); padding: 15px 0; z-index: 1000; box-shadow: 0 2px 20px rgba(0, 0, 0, 0.3); }
+        .menu-content { max-width: 1200px; margin: 0 auto; display: flex; justify-content: center; align-items: center; gap: 30px; flex-wrap: wrap; padding: 0 20px; }
+        .menu-link { color: white; text-decoration: none; font-weight: 600; font-size: 1.1em; transition: transform 0.3s, color 0.3s; padding: 10px 20px; }
+        .menu-link:hover { transform: translateY(-2px); color: #ce93d8; }
         .stats-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 25px; padding: 50px 20px; max-width: 1400px; margin: 0 auto; }
         .stat-card { background: white; padding: 30px; border-radius: 20px; border: 3px solid #ce93d8; text-align: center; box-shadow: 0 6px 25px rgba(156, 39, 176, 0.2); transition: transform 0.3s, box-shadow 0.3s; will-change: transform; }
         .stat-card:hover { transform: translateY(-5px); box-shadow: 0 10px 35px rgba(156, 39, 176, 0.3); }
@@ -78,6 +86,8 @@
         .social-btn { padding: 15px 35px; background: linear-gradient(135deg, #ab47bc, #ce93d8); border: none; border-radius: 30px; color: white; font-weight: bold; text-decoration: none; transition: transform 0.3s, box-shadow 0.3s, background 0.3s; box-shadow: 0 4px 20px rgba(171, 71, 188, 0.4); font-size: 1.1em; }
         .social-btn:hover { transform: translateY(-3px); box-shadow: 0 6px 30px rgba(171, 71, 188, 0.6); background: linear-gradient(135deg, #9c27b0, #ba68c8); }
         .token-address { background: white; padding: 20px; border-radius: 15px; margin: 20px auto; max-width: 650px; word-break: break-all; font-family: monospace; font-size: 1em; color: #6a1b9a; border: 3px solid #ce93d8; box-shadow: 0 4px 20px rgba(156, 39, 176, 0.2); }
+            .menu-link { color: white; text-decoration: none; font-weight: 600; font-size: 1.1em; transition: transform 0.3s, color 0.3s; padding: 10px 20px; }
+        .menu-link:hover { transform: translateY(-2px); color: #ce93d8; }
         @media (max-width: 768px) { 
             h1 { font-size: 2.5em; } 
             .card-stack { width: 90vw; max-width: 450px; height: 500px; } 
@@ -86,16 +96,30 @@
             .card-body p { font-size: 1.1em; } 
             .section-title { font-size: 2.2em; } 
             .storybook-section { max-width: 500px; }
+            .menu-content { gap: 15px; }
+            .menu-link { font-size: 0.9em; padding: 8px 12px; }
         }
     </style>
 </head>
 <body>
-    <div class="header">
+    <nav class="menu">
+        <div class="menu-content">
+            <a href="#home" class="menu-link">Home</a>
+            <a href="#stats" class="menu-link">Stats</a>
+            <a href="#buy" class="menu-link">Buy</a>
+            <a href="#wallets" class="menu-link">Wallets</a>
+            <a href="#story" class="menu-link">Story</a>
+            <a href="#chart" class="menu-link">Chart</a>
+            <a href="#socials" class="menu-link">Socials</a>
+        </div>
+    </nav>
+
+    <div class="header" id="home">
         <img src="https://github.com/mallardxrp/Mallard/raw/main/new%20mallard.jpg" alt="Mallard Logo" class="logo" loading="lazy">
         <h1>$MALLARD</h1>
          <img src="https://raw.githubusercontent.com/mallardxrp/Mallard/fa235f822ff09761dd043e30aa5f1edfe3da6da6/mallard_new_pfp-removebg-preview.png" alt="Mallard Banner" class="banner" loading="lazy">    </div>
 
-    <div class="stats-container">
+    <div class="stats-container" id="stats">
         <div class="stat-card">
             <div class="stat-label">💰 Market Cap</div>
             <div class="stat-value" id="marketcap">...</div>
@@ -114,7 +138,7 @@
         </div>
     </div>
 
-    <div class="buy-section">
+    <div class="buy-section" id="buy">
         <h2 class="section-title">Buy $MALLARD</h2>
         <div class="buy-options">
             <div class="buy-card">
@@ -135,7 +159,23 @@
         </div>
     </div>
 
-    <div class="storybook-section">
+    <div class="buy-section" id="wallets">
+        <h2 class="section-title">Wallets</h2>
+        <div class="buy-options">
+            <div class="buy-card">
+                <h3>Joey Wallet</h3>
+                <p>Simple & Secure XRPL Wallet</p>
+                <a href="https://joeywallet.xyz/" class="buy-btn" target="_blank" rel="noopener">Get Wallet</a>
+            </div>
+            <div class="buy-card">
+                <h3>Xaman Wallet</h3>
+                <p>XRPL Mobile & Desktop Wallet</p>
+                <a href="https://xaman.app" class="buy-btn" target="_blank" rel="noopener">Get Wallet</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="storybook-section" id="story">
         <h2 class="section-title">🦆 The Mallard Story</h2>
         <div class="cards-container">
             <div class="card-stack" id="cardStack">
@@ -187,14 +227,14 @@
         </div>
     </div>
 
-    <div class="chart-section">
+    <div class="chart-section" id="chart">
         <h2 class="section-title">📈 Live Chart</h2>
         <div id="dexscreener-embed">
             <iframe src="https://dexscreener.com/xrpl/4D414C4C41524400000000000000000000000000.raaoPU9crbLGEFCMyh8moNH4gipsHJY3wN_XRP?embed=1&loadChartSettings=0&chartLeftToolbar=0&chartDefaultOnMobile=1&chartTheme=dark&theme=dark&chartStyle=0&chartType=usd&interval=15" loading="lazy"></iframe>
         </div>
     </div>
 
-    <div class="footer">
+    <div class="footer" id="socials">
         <h3 style="color: #ffffff; font-size: 2em; margin-bottom: 30px; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);">Join the Flock 🦆</h3>
         <div class="socials">
             <a href="https://t.me/mallardcto" class="social-btn" target="_blank" rel="noopener">💬 Telegram</a>
@@ -419,6 +459,23 @@
 
         setInterval(loadXRPLData, 60000);
         setInterval(loadMarketCap, 60000);
+
+        // Smooth scroll for menu links
+        document.querySelectorAll('.menu-link').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href').substring(1);
+                const targetElement = document.getElementById(targetId);
+                if (targetElement) {
+                    const menuHeight = document.querySelector('.menu').offsetHeight;
+                    const targetPosition = targetElement.offsetTop - menuHeight;
+                    window.scrollTo({
+                        top: targetPosition,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
     </script>
 </body>
 </html>
