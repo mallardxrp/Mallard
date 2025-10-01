@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -210,11 +211,13 @@
     </div>
 
     <script>
+    // Token Configuration
     var ISSUER = "raaoPU9crbLGEFCMyh8moNH4gipsHJY3wN";
     var CURRENCY = "4D414C4C41524400000000000000000000000000";
     var currentCard = 0;
     var totalCards = 4;
 
+    // Card Navigation Functions
     function updateCards() {
         for (var i = 0; i < totalCards; i++) {
             var card = document.getElementById("card" + i);
@@ -249,6 +252,7 @@
         updateCards();
     }
 
+    // Card Navigation Event Listeners
     document.getElementById("cardStack").onclick = function(e) {
         var rect = this.getBoundingClientRect();
         var x = e.clientX - rect.left;
@@ -277,79 +281,174 @@
 
     updateCards();
 
+    // Enhanced Data Loading Function with XRPL Meta API
     function loadData() {
-        var xhr = new XMLHttpRequest();
-        xhr.open("GET", "stats.json?t=" + new Date().getTime(), true);
+        console.log('🦆 Fetching $MALLARD data from XRPL Meta API...');
         
-        xhr.onload = function() {
-            if (xhr.status === 200) {
-                try {
-                    var data = JSON.parse(xhr.responseText);
-                    console.log("Stats data loaded:", data);
-                    
-                    if (data.trustlines !== undefined) {
-                        document.getElementById("trustlines").textContent = data.trustlines.toLocaleString();
+        // Primary: Try XRPL Meta API
+        var apiUrl = "https://s1.xrplmeta.org/token/" + CURRENCY + "." + ISSUER;
+        
+        fetch(apiUrl)
+            .then(function(response) {
+                if (!response.ok) {
+                    throw new Error('XRPL Meta API error: ' + response.status);
+                }
+                return response.json();
+            })
+            .then(function(data) {
+                console.log('✅ XRPL Meta data received:', data);
+                
+                // Extract metrics from XRPL Meta response
+                var metrics = data.metrics || {};
+                
+                // Update Trustlines
+                if (metrics.trustlines !== undefined) {
+                    document.getElementById("trustlines").textContent = metrics.trustlines.toLocaleString();
+                    console.log('📊 Trustlines:', metrics.trustlines);
+                } else {
+                    document.getElementById("trustlines").textContent = "N/A";
+                }
+                
+                // Update Holders
+                if (metrics.holders !== undefined) {
+                    document.getElementById("holders").textContent = metrics.holders.toLocaleString();
+                    console.log('👥 Holders:', metrics.holders);
+                } else {
+                    document.getElementById("holders").textContent = "N/A";
+                }
+                
+                // Update Supply
+                if (metrics.supply !== undefined) {
+                    var supply = parseFloat(metrics.supply);
+                    var supplyText;
+                    if (supply >= 1000000000) {
+                        supplyText = (supply / 1000000000).toFixed(2) + "B";
+                    } else if (supply >= 1000000) {
+                        supplyText = (supply / 1000000).toFixed(2) + "M";
+                    } else if (supply >= 1000) {
+                        supplyText = (supply / 1000).toFixed(2) + "K";
+                    } else {
+                        supplyText = supply.toFixed(0);
                     }
-                    if (data.holders !== undefined) {
-                        document.getElementById("holders").textContent = data.holders.toLocaleString();
+                    document.getElementById("supply").textContent = supplyText;
+                    console.log('💰 Supply:', supplyText);
+                } else {
+                    document.getElementById("supply").textContent = "N/A";
+                }
+                
+                // Update Market Cap
+                if (metrics.marketcap !== undefined && metrics.marketcap !== null) {
+                    var mc = parseFloat(metrics.marketcap);
+                    var mcText;
+                    if (mc >= 1000000) {
+                        mcText = "$" + (mc / 1000000).toFixed(2) + "M";
+                    } else if (mc >= 1000) {
+                        mcText = "$" + (mc / 1000).toFixed(2) + "K";
+                    } else {
+                        mcText = "$" + mc.toFixed(2);
                     }
-                    if (data.supply !== undefined) {
-                        var supply = parseFloat(data.supply);
-                        var supplyText;
-                        if (supply >= 1000000000) {
-                            supplyText = (supply / 1000000000).toFixed(2) + "B";
-                        } else if (supply >= 1000000) {
-                            supplyText = (supply / 1000000).toFixed(2) + "M";
-                        } else if (supply >= 1000) {
-                            supplyText = (supply / 1000).toFixed(2) + "K";
-                        } else {
-                            supplyText = supply.toFixed(0);
-                        }
-                        document.getElementById("supply").textContent = supplyText;
-                    }
-                    if (data.marketCap !== undefined) {
-                        var mc = parseFloat(data.marketCap);
+                    document.getElementById("marketcap").textContent = mcText;
+                    console.log('📈 Market Cap:', mcText);
+                } else {
+                    // Fallback: Calculate market cap if price is available from markets
+                    if (data.markets && data.markets.length > 0 && data.markets[0].price) {
+                        var price = parseFloat(data.markets[0].price);
+                        var supply = parseFloat(metrics.supply || 0);
+                        var calculatedMC = price * supply;
+                        
                         var mcText;
-                        if (mc >= 1000000) {
-                            mcText = "$" + (mc / 1000000).toFixed(2) + "M";
-                        } else if (mc >= 1000) {
-                            mcText = "$" + (mc / 1000).toFixed(2) + "K";
+                        if (calculatedMC >= 1000000) {
+                            mcText = "$" + (calculatedMC / 1000000).toFixed(2) + "M";
+                        } else if (calculatedMC >= 1000) {
+                            mcText = "$" + (calculatedMC / 1000).toFixed(2) + "K";
                         } else {
-                            mcText = "$" + mc.toFixed(2);
+                            mcText = "$" + calculatedMC.toFixed(2);
                         }
                         document.getElementById("marketcap").textContent = mcText;
+                        console.log('📈 Market Cap (calculated):', mcText);
                     } else {
                         document.getElementById("marketcap").textContent = "N/A";
+                        console.log('⚠️ Market cap data unavailable');
                     }
-                } catch (e) {
-                    console.error("Parse error:", e);
-                    document.getElementById("trustlines").textContent = "Error";
-                    document.getElementById("holders").textContent = "Error";
-                    document.getElementById("supply").textContent = "Error";
-                    document.getElementById("marketcap").textContent = "Error";
                 }
-            } else {
-                console.error("Failed to load stats");
-                document.getElementById("trustlines").textContent = "Error";
-                document.getElementById("holders").textContent = "Error";
-                document.getElementById("supply").textContent = "Error";
-                document.getElementById("marketcap").textContent = "Error";
-            }
-        };
-        
-        xhr.onerror = function() {
-            console.error("Network error loading stats");
-            document.getElementById("trustlines").textContent = "Error";
-            document.getElementById("holders").textContent = "Error";
-            document.getElementById("supply").textContent = "Error";
-            document.getElementById("marketcap").textContent = "Error";
-        };
-        
-        xhr.send();
+                
+                console.log('✅ All stats updated successfully!');
+            })
+            .catch(function(error) {
+                console.error('❌ Error fetching from XRPL Meta:', error);
+                console.log('🔄 Trying fallback to stats.json...');
+                
+                // Fallback: Try to load from stats.json
+                fetch('stats.json?t=' + new Date().getTime())
+                    .then(function(response) {
+                        if (!response.ok) {
+                            throw new Error('stats.json not found');
+                        }
+                        return response.json();
+                    })
+                    .then(function(data) {
+                        console.log('✅ Fallback stats.json loaded:', data);
+                        
+                        if (data.trustlines !== undefined) {
+                            document.getElementById("trustlines").textContent = data.trustlines.toLocaleString();
+                        }
+                        if (data.holders !== undefined) {
+                            document.getElementById("holders").textContent = data.holders.toLocaleString();
+                        }
+                        if (data.supply !== undefined) {
+                            var supply = parseFloat(data.supply);
+                            var supplyText;
+                            if (supply >= 1000000000) {
+                                supplyText = (supply / 1000000000).toFixed(2) + "B";
+                            } else if (supply >= 1000000) {
+                                supplyText = (supply / 1000000).toFixed(2) + "M";
+                            } else if (supply >= 1000) {
+                                supplyText = (supply / 1000).toFixed(2) + "K";
+                            } else {
+                                supplyText = supply.toFixed(0);
+                            }
+                            document.getElementById("supply").textContent = supplyText;
+                        }
+                        if (data.marketCap !== undefined && data.marketCap !== null) {
+                            var mc = parseFloat(data.marketCap);
+                            var mcText;
+                            if (mc >= 1000000) {
+                                mcText = "$" + (mc / 1000000).toFixed(2) + "M";
+                            } else if (mc >= 1000) {
+                                mcText = "$" + (mc / 1000).toFixed(2) + "K";
+                            } else {
+                                mcText = "$" + mc.toFixed(2);
+                            }
+                            document.getElementById("marketcap").textContent = mcText;
+                        } else {
+                            document.getElementById("marketcap").textContent = "N/A";
+                        }
+                        
+                        console.log('✅ Fallback stats loaded successfully!');
+                    })
+                    .catch(function(fallbackError) {
+                        console.error('❌ Fallback error:', fallbackError);
+                        console.error('⚠️ Could not load data from API or stats.json');
+                        document.getElementById("trustlines").textContent = "Error";
+                        document.getElementById("holders").textContent = "Error";
+                        document.getElementById("supply").textContent = "Error";
+                        document.getElementById("marketcap").textContent = "Error";
+                    });
+            });
     }
 
+    // Initialize: Load data on page load
+    console.log('🚀 Initializing $MALLARD stats...');
     loadData();
-    setInterval(loadData, 300000);
+
+    // Auto-refresh: Update every 5 minutes (300000ms)
+    setInterval(function() {
+        console.log('🔄 Auto-refreshing stats...');
+        loadData();
+    }, 300000);
+
+    console.log('✅ $MALLARD page initialized successfully!');
+    console.log('🔄 Stats will auto-refresh every 5 minutes');
     </script>
 </body>
 </html>
