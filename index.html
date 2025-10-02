@@ -264,22 +264,22 @@
             <div class="buy-card" style="padding: 50px 35px;">
                 <h3 style="font-size: 2em; margin-bottom: 20px;">Whitelist Mint Event</h3>
                 <p style="font-size: 1.3em; margin-bottom: 30px;">📅 October 5, 2025 at 5:00 PM UTC</p>
-                <div id="countdown" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; margin: 40px 0;">
-                    <div style="background: rgba(156, 39, 176, 0.1); padding: 20px; border-radius: 15px;">
-                        <div id="days" style="font-size: 3em; font-weight: bold; color: #6a1b9a;">00</div>
-                        <div style="font-size: 1em; color: #7b1fa2; margin-top: 10px;">Days</div>
+                <div id="countdown" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(70px, 1fr)); gap: 15px; margin: 40px 0; max-width: 500px; margin-left: auto; margin-right: auto;">
+                    <div style="background: rgba(156, 39, 176, 0.1); padding: 15px 10px; border-radius: 15px;">
+                        <div id="days" style="font-size: clamp(2em, 5vw, 3em); font-weight: bold; color: #6a1b9a; line-height: 1;">00</div>
+                        <div style="font-size: clamp(0.8em, 2vw, 1em); color: #7b1fa2; margin-top: 8px;">Days</div>
                     </div>
-                    <div style="background: rgba(156, 39, 176, 0.1); padding: 20px; border-radius: 15px;">
-                        <div id="hours" style="font-size: 3em; font-weight: bold; color: #6a1b9a;">00</div>
-                        <div style="font-size: 1em; color: #7b1fa2; margin-top: 10px;">Hours</div>
+                    <div style="background: rgba(156, 39, 176, 0.1); padding: 15px 10px; border-radius: 15px;">
+                        <div id="hours" style="font-size: clamp(2em, 5vw, 3em); font-weight: bold; color: #6a1b9a; line-height: 1;">00</div>
+                        <div style="font-size: clamp(0.8em, 2vw, 1em); color: #7b1fa2; margin-top: 8px;">Hours</div>
                     </div>
-                    <div style="background: rgba(156, 39, 176, 0.1); padding: 20px; border-radius: 15px;">
-                        <div id="minutes" style="font-size: 3em; font-weight: bold; color: #6a1b9a;">00</div>
-                        <div style="font-size: 1em; color: #7b1fa2; margin-top: 10px;">Minutes</div>
+                    <div style="background: rgba(156, 39, 176, 0.1); padding: 15px 10px; border-radius: 15px;">
+                        <div id="minutes" style="font-size: clamp(2em, 5vw, 3em); font-weight: bold; color: #6a1b9a; line-height: 1;">00</div>
+                        <div style="font-size: clamp(0.8em, 2vw, 1em); color: #7b1fa2; margin-top: 8px;">Minutes</div>
                     </div>
-                    <div style="background: rgba(156, 39, 176, 0.1); padding: 20px; border-radius: 15px;">
-                        <div id="seconds" style="font-size: 3em; font-weight: bold; color: #6a1b9a;">00</div>
-                        <div style="font-size: 1em; color: #7b1fa2; margin-top: 10px;">Seconds</div>
+                    <div style="background: rgba(156, 39, 176, 0.1); padding: 15px 10px; border-radius: 15px;">
+                        <div id="seconds" style="font-size: clamp(2em, 5vw, 3em); font-weight: bold; color: #6a1b9a; line-height: 1;">00</div>
+                        <div style="font-size: clamp(0.8em, 2vw, 1em); color: #7b1fa2; margin-top: 8px;">Seconds</div>
                     </div>
                 </div>
                 <p style="font-size: 1.2em; color: #7b1fa2; margin-top: 30px;">Get ready to mint exclusive Mallard NFTs!</p>
@@ -513,34 +513,60 @@
         setInterval(loadXRPLData, 60000);
         setInterval(loadMarketCap, 60000);
 
-        // Countdown Timer for NFT Mint
+       // Countdown Timer for NFT Mint - Optimized for all devices
         const mintDate = new Date('2025-10-05T17:00:00Z').getTime();
+        let countdownInterval;
+        
+        // Cache DOM elements for better performance
+        const countdownElements = {
+            days: document.getElementById('days'),
+            hours: document.getElementById('hours'),
+            minutes: document.getElementById('minutes'),
+            seconds: document.getElementById('seconds')
+        };
         
         function updateCountdown() {
-            const now = new Date().getTime();
+            const now = Date.now();
             const distance = mintDate - now;
             
             if (distance < 0) {
-                document.getElementById('days').textContent = '00';
-                document.getElementById('hours').textContent = '00';
-                document.getElementById('minutes').textContent = '00';
-                document.getElementById('seconds').textContent = '00';
+                // Event has passed
+                countdownElements.days.textContent = '00';
+                countdownElements.hours.textContent = '00';
+                countdownElements.minutes.textContent = '00';
+                countdownElements.seconds.textContent = '00';
+                if (countdownInterval) clearInterval(countdownInterval);
                 return;
             }
             
-            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+            // Calculate time units
+            const days = Math.floor(distance / 86400000); // 1000 * 60 * 60 * 24
+            const hours = Math.floor((distance % 86400000) / 3600000); // 1000 * 60 * 60
+            const minutes = Math.floor((distance % 3600000) / 60000); // 1000 * 60
+            const seconds = Math.floor((distance % 60000) / 1000);
             
-            document.getElementById('days').textContent = String(days).padStart(2, '0');
-            document.getElementById('hours').textContent = String(hours).padStart(2, '0');
-            document.getElementById('minutes').textContent = String(minutes).padStart(2, '0');
-            document.getElementById('seconds').textContent = String(seconds).padStart(2, '0');
+            // Use textContent for better performance and avoid layout thrashing
+            countdownElements.days.textContent = String(days).padStart(2, '0');
+            countdownElements.hours.textContent = String(hours).padStart(2, '0');
+            countdownElements.minutes.textContent = String(minutes).padStart(2, '0');
+            countdownElements.seconds.textContent = String(seconds).padStart(2, '0');
         }
         
+        // Initial update
         updateCountdown();
-        setInterval(updateCountdown, 1000);
+        
+        // Set interval and store reference for cleanup
+        countdownInterval = setInterval(updateCountdown, 1000);
+        
+        // Pause countdown when page is hidden (mobile battery optimization)
+        document.addEventListener('visibilitychange', function() {
+            if (document.hidden) {
+                if (countdownInterval) clearInterval(countdownInterval);
+            } else {
+                updateCountdown();
+                countdownInterval = setInterval(updateCountdown, 1000);
+            }
+        });
 
         // Smooth scroll for menu links
         document.querySelectorAll('.menu-link').forEach(link => {
