@@ -2,8 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
-    <meta name="description" content="$MALLARD - The Duck That Became a Legend on XRPL">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>$MALLARD - The Duck That Became a Legend</title>
     <link rel="preconnect" href="https://api.dexscreener.com">
     <link rel="preconnect" href="https://xrplcluster.com">
@@ -11,7 +10,7 @@
         * { margin: 0; padding: 0; box-sizing: border-box; }
         html { scroll-behavior: smooth; }
         body { 
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif; 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
             background: linear-gradient(135deg, #d5a5f5 0%, #be88f4 25%, #a86cd1 50%, #be88f4 75%, #d5a5f5 100%);
             background-size: 400% 400%;
             animation: gradientShift 15s ease infinite;
@@ -23,93 +22,24 @@
         img { 
             image-rendering: -webkit-optimize-contrast;
             image-rendering: crisp-edges;
-            max-width: 100%;
-            height: auto;
         }
         @keyframes gradientShift {
             0% { background-position: 0% 50%; }
             50% { background-position: 100% 50%; }
             100% { background-position: 0% 50%; }
         }
-        
-        /* Menu - Responsive */
-        .menu { 
-            position: fixed; 
-            top: 0; 
-            left: 0; 
-            width: 100%; 
-            background: rgba(156, 39, 176, 0.95); 
-            backdrop-filter: blur(10px); 
-            padding: 10px 0; 
-            z-index: 1000; 
-            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.3); 
-        }
-        .menu-content { 
-            max-width: 1200px; 
-            margin: 0 auto; 
-            display: flex; 
-            justify-content: center; 
-            align-items: center; 
-            gap: 8px; 
-            flex-wrap: wrap; 
-            padding: 0 10px; 
-        }
-        .menu-link { 
-            color: white; 
-            text-decoration: none; 
-            font-weight: 600; 
-            font-size: clamp(0.75rem, 2vw, 1rem); 
-            transition: transform 0.3s ease, color 0.3s ease; 
-            padding: 8px 12px; 
-            white-space: nowrap;
-        }
-        .menu-link:hover { transform: translateY(-2px); color: #ce93d8; }
-        
-        /* Header - Responsive */
-        .header { 
-            text-align: center; 
-            padding: clamp(80px, 15vh, 120px) 20px clamp(40px, 8vh, 60px); 
-            background: rgba(186, 104, 200, 0.15); 
-        }
-        .logo { 
-            width: clamp(120px, 30vw, 180px); 
-            height: clamp(120px, 30vw, 180px); 
-            border-radius: 50%; 
-            margin: 0 auto 20px; 
-            border: 5px solid #9c27b0; 
-            box-shadow: 0 8px 40px rgba(156, 39, 176, 0.4); 
-            object-fit: cover; 
-            opacity: 0; 
-            animation: fadeInScale 0.8s ease forwards; 
-        }
+        .header { text-align: center; padding: 60px 20px; background: rgba(186, 104, 200, 0.15); padding-top: 120px; }
+        .logo { width: 180px; height: 180px; border-radius: 50%; margin: 0 auto 30px; border: 5px solid #9c27b0; box-shadow: 0 8px 40px rgba(156, 39, 176, 0.4); object-fit: cover; opacity: 0; animation: fadeInScale 0.8s ease forwards; }
         @keyframes fadeInScale {
             from { opacity: 0; transform: scale(0.8); }
             to { opacity: 1; transform: scale(1); }
         }
-        h1 { 
-            font-size: clamp(2rem, 8vw, 4rem); 
-            color: #ffffff; 
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8); 
-            margin-bottom: 15px; 
-            font-weight: bold; 
-            letter-spacing: 2px; 
-            opacity: 0; 
-            animation: fadeInUp 0.8s ease 0.2s forwards; 
-        }
+        h1 { font-size: 4em; color: #ffffff; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8); margin-bottom: 15px; font-weight: bold; letter-spacing: 3px; opacity: 0; animation: fadeInUp 0.8s ease 0.2s forwards; }
         @keyframes fadeInUp {
             from { opacity: 0; transform: translateY(30px); }
             to { opacity: 1; transform: translateY(0); }
         }
-        .banner { 
-            width: auto; 
-            max-width: clamp(250px, 80vw, 600px); 
-            height: auto; 
-            margin: 20px auto 30px; 
-            display: block; 
-            filter: drop-shadow(0 4px 15px rgba(0, 0, 0, 0.2)); 
-            opacity: 0; 
-            animation: fadeInFloat 1s ease 0.4s forwards, float 3s ease-in-out 1.4s infinite; 
-        }
+        .banner { width: auto; max-width: 95%; height: auto; margin: 30px auto 40px; display: block; filter: drop-shadow(0 4px 15px rgba(0, 0, 0, 0.2)); opacity: 0; animation: fadeInFloat 1s ease 0.4s forwards, float 3s ease-in-out 1.4s infinite; }
         @keyframes float {
             0%, 100% { transform: translateY(0px); }
             50% { transform: translateY(-20px); }
@@ -118,114 +48,27 @@
             from { opacity: 0; transform: translateY(30px); }
             to { opacity: 0.9; transform: translateY(0); }
         }
-        
-        /* Stats - Responsive Grid */
-        .stats-container { 
-            display: grid; 
-            grid-template-columns: repeat(auto-fit, minmax(min(220px, 100%), 1fr)); 
-            gap: clamp(15px, 3vw, 25px); 
-            padding: clamp(30px, 6vw, 50px) clamp(15px, 3vw, 20px); 
-            max-width: 1400px; 
-            margin: 0 auto; 
-        }
-        .stat-card { 
-            background: white; 
-            padding: clamp(20px, 4vw, 30px); 
-            border-radius: 20px; 
-            border: 3px solid #ce93d8; 
-            text-align: center; 
-            box-shadow: 0 6px 25px rgba(156, 39, 176, 0.2); 
-            transition: transform 0.3s ease, box-shadow 0.3s ease; 
-        }
+        .menu { position: fixed; top: 0; left: 0; width: 100%; background: rgba(156, 39, 176, 0.9); backdrop-filter: blur(10px); padding: 12px 0; z-index: 1000; box-shadow: 0 2px 20px rgba(0, 0, 0, 0.3); }
+        .menu-content { max-width: 1200px; margin: 0 auto; display: flex; justify-content: center; align-items: center; gap: 20px; flex-wrap: wrap; padding: 0 15px; }
+        .menu-link { color: white; text-decoration: none; font-weight: 600; font-size: 1em; transition: transform 0.3s ease, color 0.3s ease; padding: 8px 15px; }
+        .menu-link:hover { transform: translateY(-2px); color: #ce93d8; }
+        .stats-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 25px; padding: 50px 20px; max-width: 1400px; margin: 0 auto; }
+        .stat-card { background: white; padding: 30px; border-radius: 20px; border: 3px solid #ce93d8; text-align: center; box-shadow: 0 6px 25px rgba(156, 39, 176, 0.2); transition: transform 0.3s ease, box-shadow 0.3s ease; will-change: transform; }
         .stat-card:hover { transform: translateY(-5px); box-shadow: 0 10px 35px rgba(156, 39, 176, 0.3); }
-        .stat-label { 
-            font-size: clamp(0.85rem, 2vw, 1rem); 
-            color: #7b1fa2; 
-            margin-bottom: 10px; 
-            font-weight: 600; 
-        }
-        .stat-value { 
-            font-size: clamp(1.5rem, 4vw, 2rem); 
-            font-weight: bold; 
-            color: #6a1b9a; 
-            word-break: break-word;
-        }
-        
-        /* Sections - Responsive */
-        .buy-section { 
-            max-width: 1200px; 
-            margin: clamp(30px, 6vw, 50px) auto; 
-            padding: 0 clamp(15px, 3vw, 20px); 
-        }
-        .section-title { 
-            text-align: center; 
-            font-size: clamp(1.8rem, 6vw, 3rem); 
-            color: #ffffff; 
-            margin-bottom: clamp(25px, 5vw, 40px); 
-            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.5); 
-            font-weight: bold; 
-        }
-        
-        /* Buy/Wallet Cards - Responsive */
-        .buy-options { 
-            display: grid; 
-            grid-template-columns: repeat(auto-fit, minmax(min(260px, 100%), 1fr)); 
-            gap: clamp(15px, 3vw, 25px); 
-            margin-bottom: clamp(30px, 5vw, 50px); 
-        }
-        .buy-card { 
-            background: white; 
-            padding: clamp(25px, 4vw, 35px); 
-            border-radius: 20px; 
-            border: 3px solid #ce93d8; 
-            text-align: center; 
-            transition: transform 0.3s ease, box-shadow 0.3s ease; 
-            box-shadow: 0 6px 25px rgba(156, 39, 176, 0.2); 
-        }
+        .stat-label { font-size: 1em; color: #7b1fa2; margin-bottom: 15px; font-weight: 600; }
+        .stat-value { font-size: 2em; font-weight: bold; color: #6a1b9a; }
+        .buy-section { max-width: 1200px; margin: 50px auto; padding: 0 20px; }
+        .section-title { text-align: center; font-size: 3em; color: #ffffff; margin-bottom: 40px; text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.5); font-weight: bold; }
+        .buy-options { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 25px; margin-bottom: 50px; }
+        .buy-card { background: white; padding: 35px; border-radius: 20px; border: 3px solid #ce93d8; text-align: center; transition: transform 0.3s ease, box-shadow 0.3s ease; box-shadow: 0 6px 25px rgba(156, 39, 176, 0.2); will-change: transform; }
         .buy-card:hover { transform: translateY(-8px); box-shadow: 0 12px 40px rgba(156, 39, 176, 0.35); }
-        .buy-card h3 { 
-            color: #6a1b9a; 
-            margin-bottom: 15px; 
-            font-size: clamp(1.2rem, 3vw, 1.5rem); 
-        }
-        .buy-card p { 
-            color: #7b1fa2; 
-            margin-bottom: 20px; 
-            font-size: clamp(0.9rem, 2vw, 1rem); 
-        }
-        .buy-btn { 
-            display: inline-block; 
-            padding: clamp(12px, 2vw, 14px) clamp(25px, 4vw, 35px); 
-            background: linear-gradient(135deg, #ab47bc, #ce93d8); 
-            border: none; 
-            border-radius: 30px; 
-            color: white; 
-            font-weight: bold; 
-            text-decoration: none; 
-            transition: transform 0.3s ease, background 0.3s ease; 
-            font-size: clamp(0.95rem, 2vw, 1.1rem); 
-        }
+        .buy-card h3 { color: #6a1b9a; margin-bottom: 15px; font-size: 1.5em; }
+        .buy-card p { color: #7b1fa2; margin-bottom: 25px; font-size: 1em; }
+        .buy-btn { display: inline-block; padding: 14px 35px; background: linear-gradient(135deg, #ab47bc, #ce93d8); border: none; border-radius: 30px; color: white; font-weight: bold; text-decoration: none; transition: transform 0.3s ease, background 0.3s ease; font-size: 1.1em; }
         .buy-btn:hover { background: linear-gradient(135deg, #9c27b0, #ba68c8); transform: scale(1.05); }
-        
-        /* Story Cards - Fully Responsive */
-        .storybook-section { 
-            max-width: 900px; 
-            margin: clamp(40px, 8vw, 80px) auto; 
-            padding: 0 clamp(15px, 3vw, 20px); 
-        }
-        .cards-container { 
-            position: relative; 
-            min-height: clamp(450px, 80vh, 700px); 
-            display: flex; 
-            flex-direction: column; 
-            align-items: center; 
-        }
-        .card-stack { 
-            position: relative; 
-            width: min(600px, 90vw); 
-            height: clamp(400px, 70vh, 550px); 
-            margin-bottom: 30px; 
-        }
+        .storybook-section { max-width: 900px; margin: 80px auto; padding: 0 20px; }
+        .cards-container { position: relative; height: 700px; display: flex; flex-direction: column; align-items: center; }
+        .card-stack { position: relative; width: 600px; height: 550px; margin-bottom: 30px; }
         .story-card { 
             position: absolute; 
             top: 0;
@@ -236,191 +79,47 @@
             backdrop-filter: blur(20px); 
             border: 2px solid rgba(255, 255, 255, 0.4); 
             border-radius: 20px; 
-            padding: clamp(25px, 5vw, 40px); 
+            padding: 40px; 
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3); 
             user-select: none; 
             transition: transform 0.5s ease, opacity 0.5s ease;
             display: flex; 
             flex-direction: column;
             cursor: pointer;
+            will-change: transform, opacity;
         }
-        .card-header { 
-            display: flex; 
-            justify-content: space-between; 
-            align-items: center; 
-            margin-bottom: clamp(20px, 4vw, 30px); 
-            padding-bottom: clamp(15px, 3vw, 20px); 
-            border-bottom: 1px solid rgba(255, 255, 255, 0.2); 
-            gap: 10px;
-            flex-wrap: wrap;
-        }
-        .card-title { 
-            font-size: clamp(1.4rem, 4vw, 2.2rem); 
-            font-weight: bold; 
-            color: #000000; 
-            text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.3); 
-        }
-        .card-count { 
-            background: rgba(255, 255, 255, 0.8); 
-            padding: clamp(8px, 2vw, 10px) clamp(15px, 3vw, 20px); 
-            border-radius: 20px; 
-            font-size: clamp(0.9rem, 2vw, 1.1rem); 
-            font-weight: bold; 
-            color: #000000; 
-        }
+        .card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; padding-bottom: 20px; border-bottom: 1px solid rgba(255, 255, 255, 0.2); }
+        .card-title { font-size: 2.2em; font-weight: bold; color: #000000; text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.3); }
+        .card-count { background: rgba(255, 255, 255, 0.8); padding: 10px 20px; border-radius: 20px; font-size: 1.1em; font-weight: bold; color: #000000; }
         .card-body { flex: 1; display: flex; flex-direction: column; justify-content: center; }
-        .card-body p { 
-            line-height: 1.7; 
-            margin-bottom: clamp(15px, 3vw, 25px); 
-            font-size: clamp(1rem, 2.5vw, 1.3rem); 
-            color: #000000; 
-            text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.3); 
-            text-align: left; 
-        }
-        .card-highlight { 
-            text-align: center; 
-            font-weight: bold; 
-            font-size: clamp(1.1rem, 3vw, 1.4rem); 
-            color: #000000; 
-            text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.3); 
-            margin-top: clamp(15px, 3vw, 25px); 
-            padding: clamp(15px, 3vw, 20px); 
-            background: rgba(255, 255, 255, 0.2); 
-            border-radius: 15px; 
-        }
-        .swipe-instructions { 
-            color: rgba(255, 255, 255, 0.9); 
-            font-size: clamp(0.9rem, 2vw, 1.2rem); 
-            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5); 
-            text-align: center; 
-            margin-top: 20px; 
-            padding: 0 15px;
-        }
-        
-        /* Chart - Responsive */
-        .chart-section { 
-            max-width: 1400px; 
-            margin: clamp(40px, 8vw, 80px) auto; 
-            padding: 0 clamp(15px, 3vw, 20px); 
-        }
-        #dexscreener-embed { 
-            position: relative; 
-            width: 100%; 
-            padding-bottom: 125%; 
-            border-radius: 20px; 
-            overflow: hidden; 
-            box-shadow: 0 10px 50px rgba(156, 39, 176, 0.3); 
-            border: 3px solid #ce93d8; 
-        }
-        @media(min-width: 600px) { 
-            #dexscreener-embed { padding-bottom: 100%; } 
-        }
-        @media(min-width: 768px) { 
-            #dexscreener-embed { padding-bottom: 80%; } 
-        }
-        @media(min-width: 1024px) { 
-            #dexscreener-embed { padding-bottom: 65%; } 
-        }
-        #dexscreener-embed iframe { 
-            position: absolute; 
-            width: 100%; 
-            height: 100%; 
-            top: 0; 
-            left: 0; 
-            border: 0; 
-        }
-        
-        /* NFT Countdown - Responsive */
-        .nft-image { 
-            width: 100%; 
-            max-width: 600px; 
-            height: auto; 
-            margin: 0 auto clamp(25px, 5vw, 40px); 
-            display: block; 
-            border-radius: 20px; 
-            box-shadow: 0 10px 40px rgba(156, 39, 176, 0.3); 
-            border: 3px solid #ce93d8; 
-        }
-        .countdown-grid { 
-            display: grid; 
-            grid-template-columns: repeat(auto-fit, minmax(70px, 1fr)); 
-            gap: clamp(10px, 3vw, 20px); 
-            margin: clamp(25px, 5vw, 40px) 0; 
-        }
-        .countdown-item { 
-            background: rgba(156, 39, 176, 0.1); 
-            padding: clamp(15px, 3vw, 20px); 
-            border-radius: 15px; 
-        }
-        .countdown-number { 
-            font-size: clamp(2rem, 6vw, 3rem); 
-            font-weight: bold; 
-            color: #6a1b9a; 
-        }
-        .countdown-label { 
-            font-size: clamp(0.8rem, 2vw, 1rem); 
-            color: #7b1fa2; 
-            margin-top: 10px; 
-        }
-        
-        /* Footer - Responsive */
-        .footer { 
-            text-align: center; 
-            padding: clamp(30px, 6vw, 50px) clamp(15px, 3vw, 20px); 
-            background: rgba(186, 104, 200, 0.15); 
-            border-top: 3px solid #ab47bc; 
-            margin-top: clamp(40px, 8vw, 80px); 
-        }
-        .footer h3 { 
-            color: #ffffff; 
-            font-size: clamp(1.5rem, 4vw, 2rem); 
-            margin-bottom: clamp(20px, 4vw, 30px); 
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); 
-        }
-        .socials { 
-            display: flex; 
-            justify-content: center; 
-            gap: clamp(10px, 2vw, 20px); 
-            flex-wrap: wrap; 
-            margin-top: clamp(20px, 4vw, 30px); 
-        }
-        .social-btn { 
-            padding: clamp(12px, 2vw, 15px) clamp(20px, 3vw, 35px); 
-            background: linear-gradient(135deg, #ab47bc, #ce93d8); 
-            border: none; 
-            border-radius: 30px; 
-            color: white; 
-            font-weight: bold; 
-            text-decoration: none; 
-            transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease; 
-            box-shadow: 0 4px 20px rgba(171, 71, 188, 0.4); 
-            font-size: clamp(0.85rem, 2vw, 1.1rem); 
-        }
-        .social-btn:hover { 
-            transform: translateY(-3px); 
-            box-shadow: 0 6px 30px rgba(171, 71, 188, 0.6); 
-            background: linear-gradient(135deg, #9c27b0, #ba68c8); 
-        }
-        .token-address { 
-            background: white; 
-            padding: clamp(15px, 3vw, 20px); 
-            border-radius: 15px; 
-            margin: 20px auto; 
-            max-width: 650px; 
-            word-break: break-all; 
-            font-family: 'Courier New', monospace; 
-            font-size: clamp(0.75rem, 2vw, 1rem); 
-            color: #6a1b9a; 
-            border: 3px solid #ce93d8; 
-            box-shadow: 0 4px 20px rgba(156, 39, 176, 0.2); 
-        }
-        
-        /* Touch-friendly adjustments */
-        @media (hover: none) and (pointer: coarse) {
-            .buy-btn, .social-btn, .menu-link { 
-                min-height: 44px; 
-                min-width: 44px; 
-            }
+        .card-body p { line-height: 1.8; margin-bottom: 25px; font-size: 1.3em; color: #000000; text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.3); text-align: left; }
+        .card-highlight { text-align: center; font-weight: bold; font-size: 1.4em; color: #000000; text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.3); margin-top: 25px; padding: 20px; background: rgba(255, 255, 255, 0.2); border-radius: 15px; }
+        .swipe-instructions { color: rgba(255, 255, 255, 0.9); font-size: 1.2em; text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5); text-align: center; margin-top: 20px; }
+        .chart-section { max-width: 1400px; margin: 80px auto; padding: 0 20px; }
+        #dexscreener-embed { position: relative; width: 100%; padding-bottom: 200%; border-radius: 20px; overflow: hidden; box-shadow: 0 10px 50px rgba(156, 39, 176, 0.3); border: 3px solid #ce93d8; }
+        @media(min-width: 768px) and (max-width: 1023px) { #dexscreener-embed { padding-bottom: 150%; } }
+        @media(min-width: 1024px) { #dexscreener-embed { padding-bottom: 65%; } }
+        #dexscreener-embed iframe { position: absolute; width: 100%; height: 100%; top: 0; left: 0; border: 0; }
+        .footer { text-align: center; padding: 50px 20px; background: rgba(186, 104, 200, 0.15); border-top: 3px solid #ab47bc; margin-top: 80px; }
+        .socials { display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; margin-top: 30px; }
+        .social-btn { padding: 15px 35px; background: linear-gradient(135deg, #ab47bc, #ce93d8); border: none; border-radius: 30px; color: white; font-weight: bold; text-decoration: none; transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease; box-shadow: 0 4px 20px rgba(171, 71, 188, 0.4); font-size: 1.1em; }
+        .social-btn:hover { transform: translateY(-3px); box-shadow: 0 6px 30px rgba(171, 71, 188, 0.6); background: linear-gradient(135deg, #9c27b0, #ba68c8); }
+        .token-address { background: white; padding: 20px; border-radius: 15px; margin: 20px auto; max-width: 650px; word-break: break-all; font-family: monospace; font-size: 1em; color: #6a1b9a; border: 3px solid #ce93d8; box-shadow: 0 4px 20px rgba(156, 39, 176, 0.2); }
+            .menu-link { color: white; text-decoration: none; font-weight: 600; font-size: 1.1em; transition: transform 0.3s, color 0.3s; padding: 10px 20px; }
+        .menu-link:hover { transform: translateY(-2px); color: #ce93d8; }
+        @media (max-width: 768px) { 
+            h1 { font-size: 2.5em; } 
+            .header { padding-top: 140px; }
+            .card-stack { width: 90vw; max-width: 450px; height: 500px; } 
+            .story-card { padding: 30px; } 
+            .card-title { font-size: 1.8em; } 
+            .card-body p { font-size: 1.1em; } 
+            .section-title { font-size: 2.2em; } 
+            .storybook-section { max-width: 500px; }
+            .menu-content { gap: 10px; }
+            .menu-link { font-size: 0.85em; padding: 6px 10px; }
+            .menu { padding: 10px 0; }
+            .logo { width: 150px; height: 150px; }
         }
     </style>
 </head>
@@ -441,8 +140,7 @@
     <div class="header" id="home">
         <img src="https://github.com/mallardxrp/Mallard/raw/main/new%20mallard.jpg" alt="Mallard Logo" class="logo" loading="lazy">
         <h1>$MALLARD</h1>
-        <img src="https://raw.githubusercontent.com/mallardxrp/Mallard/fa235f822ff09761dd043e30aa5f1edfe3da6da6/mallard_new_pfp-removebg-preview.png" alt="Mallard Banner" class="banner" loading="lazy">
-    </div>
+         <img src="https://raw.githubusercontent.com/mallardxrp/Mallard/fa235f822ff09761dd043e30aa5f1edfe3da6da6/mallard_new_pfp-removebg-preview.png" alt="Mallard Banner" class="banner" loading="lazy">    </div>
 
     <div class="stats-container" id="stats">
         <div class="stat-card">
@@ -458,7 +156,7 @@
             <div class="stat-value" id="holders">...</div>
         </div>
         <div class="stat-card">
-            <div class="stat-label">📊 Supply</div>
+            <div class="stat-label">📊 Circulating Supply</div>
             <div class="stat-value" id="supply">...</div>
         </div>
     </div>
@@ -562,21 +260,304 @@
     <div class="buy-section" id="nft">
         <h2 class="section-title">🎨 NFT Whitelist Mint</h2>
         <div style="max-width: 800px; margin: 0 auto;">
-            <img src="https://github.com/mallardxrp/Mallard/raw/main/photo_2025-09-29_18-03-05.jpg" alt="Mallard NFT" class="nft-image" loading="lazy">
-            <div class="buy-card" style="padding: clamp(30px, 5vw, 50px) clamp(25px, 4vw, 35px);">
-                <h3 style="font-size: clamp(1.5rem, 4vw, 2rem); margin-bottom: 20px;">Whitelist Mint Event</h3>
-                <p style="font-size: clamp(1.1rem, 3vw, 1.3rem); margin-bottom: 30px;">📅 October 5, 2025 at 5:00 PM UTC</p>
-                <div class="countdown-grid">
-                    <div class="countdown-item">
-                        <div id="days" class="countdown-number">00</div>
-                        <div class="countdown-label">Days</div>
+            <img src="https://github.com/mallardxrp/Mallard/raw/main/photo_2025-09-29_18-03-05.jpg" alt="Mallard NFT" style="width: 100%; max-width: 600px; height: auto; margin: 0 auto 40px; display: block; border-radius: 20px; box-shadow: 0 10px 40px rgba(156, 39, 176, 0.3); border: 3px solid #ce93d8;" loading="lazy">
+            <div class="buy-card" style="padding: 50px 35px;">
+                <h3 style="font-size: 2em; margin-bottom: 20px;">Whitelist Mint Event</h3>
+                <p style="font-size: 1.3em; margin-bottom: 30px;">📅 October 5, 2025 at 5:00 PM UTC</p>
+                <div id="countdown" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; margin: 40px 0;">
+                    <div style="background: rgba(156, 39, 176, 0.1); padding: 20px; border-radius: 15px;">
+                        <div id="days" style="font-size: 3em; font-weight: bold; color: #6a1b9a;">00</div>
+                        <div style="font-size: 1em; color: #7b1fa2; margin-top: 10px;">Days</div>
                     </div>
-                    <div class="countdown-item">
-                        <div id="hours" class="countdown-number">00</div>
-                        <div class="countdown-label">Hours</div>
+                    <div style="background: rgba(156, 39, 176, 0.1); padding: 20px; border-radius: 15px;">
+                        <div id="hours" style="font-size: 3em; font-weight: bold; color: #6a1b9a;">00</div>
+                        <div style="font-size: 1em; color: #7b1fa2; margin-top: 10px;">Hours</div>
                     </div>
-                    <div class="countdown-item">
-                        <div id="minutes" class="countdown-number">00</div>
-                        <div class="countdown-label">Minutes</div>
+                    <div style="background: rgba(156, 39, 176, 0.1); padding: 20px; border-radius: 15px;">
+                        <div id="minutes" style="font-size: 3em; font-weight: bold; color: #6a1b9a;">00</div>
+                        <div style="font-size: 1em; color: #7b1fa2; margin-top: 10px;">Minutes</div>
                     </div>
-                    <div class="countdown-item">
+                    <div style="background: rgba(156, 39, 176, 0.1); padding: 20px; border-radius: 15px;">
+                        <div id="seconds" style="font-size: 3em; font-weight: bold; color: #6a1b9a;">00</div>
+                        <div style="font-size: 1em; color: #7b1fa2; margin-top: 10px;">Seconds</div>
+                    </div>
+                </div>
+                <p style="font-size: 1.2em; color: #7b1fa2; margin-top: 30px;">Get ready to mint exclusive Mallard NFTs!</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer" id="socials">
+        <h3 style="color: #ffffff; font-size: 2em; margin-bottom: 30px; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);">Join the Flock 🦆</h3>
+        <div class="socials">
+            <a href="https://t.me/mallardcto" class="social-btn" target="_blank" rel="noopener">💬 Telegram</a>
+            <a href="https://x.com/mallardxrp" class="social-btn" target="_blank" rel="noopener">🐦 Twitter/X</a>
+            <a href="https://www.tiktok.com/@mallardxrp" class="social-btn" target="_blank" rel="noopener">🎵 TikTok</a>
+            <a href="https://www.youtube.com/@mallardxrp" class="social-btn" target="_blank" rel="noopener">📺 YouTube</a>
+            <a href="https://www.instagram.com/mallardxrp" class="social-btn" target="_blank" rel="noopener">📸 Instagram</a>
+            <a href="https://linktr.ee/mallardxrp" class="social-btn" target="_blank" rel="noopener">🔗 Linktree</a>
+            <a href="https://xrpscan.com/account/raaoPU9crbLGEFCMyh8moNH4gipsHJY3wN" class="social-btn" target="_blank" rel="noopener">🔍 XRPScan</a>
+        </div>
+        <h3 style="color: #ffffff; font-size: 2em; margin-bottom: 20px; margin-top: 50px; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);">Token Address</h3>
+        <div class="token-address">raaoPU9crbLGEFCMyh8moNH4gipsHJY3wN</div>
+        <p style="margin-top: 20px; color: #7b1fa2; font-weight: 600;">Contract: 4D414C4C41524400000000000000000000000000</p>
+        <p style="margin-top: 30px; font-size: 1em; color: #7b1fa2;">© 2025 Mallard | The Duck That Became a Legend 🦆</p>
+    </div>
+
+    <script>
+        const MALLARD_ISSUER = 'raaoPU9crbLGEFCMyh8moNH4gipsHJY3wN';
+        const MALLARD_CURRENCY = '4D414C4C41524400000000000000000000000000';
+        let currentCard = 0;
+        const totalCards = 4;
+        const cards = [];
+
+        // Cache card elements
+        for (let i = 0; i < totalCards; i++) {
+            cards.push(document.getElementById('card' + i));
+        }
+
+        // Optimized card update with RAF
+        function updateCards() {
+            requestAnimationFrame(() => {
+                cards.forEach((card, i) => {
+                    if (i === currentCard) {
+                        card.style.cssText = 'z-index: 10; opacity: 1; transform: scale(1) translateY(0)';
+                    } else if (i === (currentCard + 1) % totalCards) {
+                        card.style.cssText = 'z-index: 8; opacity: 0.7; transform: scale(0.95) translateY(15px)';
+                    } else if (i === (currentCard + 2) % totalCards) {
+                        card.style.cssText = 'z-index: 6; opacity: 0.4; transform: scale(0.90) translateY(30px)';
+                    } else {
+                        card.style.cssText = 'z-index: 4; opacity: 0.2; transform: scale(0.85) translateY(45px)';
+                    }
+                });
+            });
+        }
+
+        function nextCard() {
+            currentCard = (currentCard + 1) % totalCards;
+            updateCards();
+        }
+
+        function prevCard() {
+            currentCard = (currentCard - 1 + totalCards) % totalCards;
+            updateCards();
+        }
+
+        const stack = document.getElementById('cardStack');
+        
+        // Optimized click handler
+        stack.onclick = e => {
+            const rect = stack.getBoundingClientRect();
+            (e.clientX - rect.left < rect.width / 2) ? prevCard() : nextCard();
+        };
+
+        // Keyboard handler
+        document.onkeydown = e => {
+            if (e.key === 'ArrowLeft') prevCard();
+            else if (e.key === 'ArrowRight') nextCard();
+        };
+
+        // Touch handler
+        let touchStartX = 0;
+        stack.ontouchstart = e => touchStartX = e.touches[0].clientX;
+        stack.ontouchend = e => {
+            const diff = e.changedTouches[0].clientX - touchStartX;
+            if (Math.abs(diff) > 50) diff > 0 ? prevCard() : nextCard();
+        };
+
+        updateCards();
+
+        // XRPL data fetch with FULL pagination
+        let xrplController;
+        async function loadXRPLData() {
+            if (xrplController) xrplController.abort();
+            xrplController = new AbortController();
+
+            try {
+                const endpoints = [
+                    'https://xrplcluster.com',
+                    'https://s1.ripple.com:51234',
+                    'https://s2.ripple.com:51234'
+                ];
+                
+                let allLines = [];
+                let success = false;
+                
+                // Try each endpoint with full pagination
+                for (const endpoint of endpoints) {
+                    try {
+                        let marker = undefined;
+                        let hasMore = true;
+                        allLines = [];
+                        
+                        // Fetch ALL pages
+                        while (hasMore) {
+                            const request = {
+                                method: 'account_lines',
+                                params: [{
+                                    account: MALLARD_ISSUER,
+                                    ledger_index: 'validated',
+                                    limit: 400
+                                }]
+                            };
+                            
+                            if (marker) request.params[0].marker = marker;
+                            
+                            const response = await fetch(endpoint, {
+                                method: 'POST',
+                                headers: {'Content-Type': 'application/json'},
+                                body: JSON.stringify(request),
+                                signal: xrplController.signal
+                            });
+                            
+                            const data = await response.json();
+                            
+                            if (data?.result?.lines) {
+                                const mallardLines = data.result.lines.filter(l => l.currency === MALLARD_CURRENCY);
+                                allLines = allLines.concat(mallardLines);
+                            }
+                            
+                            marker = data?.result?.marker;
+                            hasMore = marker !== undefined;
+                        }
+                        
+                        success = true;
+                        break;
+                    } catch (err) {
+                        continue;
+                    }
+                }
+                
+                if (!success || allLines.length === 0) {
+                    throw new Error('Failed to fetch');
+                }
+                
+                // Calculate stats - FROM ISSUER PERSPECTIVE
+                const trustlines = allLines.length;
+                // Holders = trustlines with actual balance (not just set up)
+                const holders = allLines.filter(l => {
+                    const bal = parseFloat(l.balance || 0);
+                    return Math.abs(bal) > 0;
+                }).length;
+                
+                // Circulating supply: sum of NEGATIVE balances (tokens held by users from issuer's view)
+                const supply = allLines.reduce((sum, l) => {
+                    const bal = parseFloat(l.balance || 0);
+                    return sum + (bal < 0 ? Math.abs(bal) : 0);
+                }, 0);
+                
+                document.getElementById('trustlines').textContent = trustlines.toLocaleString();
+                document.getElementById('holders').textContent = holders.toLocaleString();
+                
+                const supplyText = supply >= 1e9 ? (supply / 1e9).toFixed(2) + 'B' :
+                                  supply >= 1e6 ? (supply / 1e6).toFixed(2) + 'M' :
+                                  supply >= 1e3 ? (supply / 1e3).toFixed(2) + 'K' :
+                                  supply.toFixed(0);
+                
+                document.getElementById('supply').textContent = supplyText;
+                
+            } catch (err) {
+                if (err.name !== 'AbortError') {
+                    document.getElementById('trustlines').textContent = 'Retry...';
+                    document.getElementById('holders').textContent = 'Retry...';
+                    document.getElementById('supply').textContent = 'Retry...';
+                    setTimeout(loadXRPLData, 5000);
+                }
+            }
+        }
+
+        // Optimized market cap fetch
+        let mcController;
+        async function loadMarketCap() {
+            if (mcController) mcController.abort();
+            mcController = new AbortController();
+
+            try {
+                const response = await fetch(`https://api.dexscreener.com/latest/dex/search/?q=MALLARD+XRPL`, {
+                    signal: mcController.signal
+                });
+                const data = await response.json();
+                
+                const pair = data.pairs?.find(p => p.chainId === 'xrpl' || p.baseToken?.address?.includes(MALLARD_ISSUER));
+                if (pair) {
+                    const mc = pair.fdv || pair.marketCap;
+                    if (mc > 0) {
+                        const text = mc >= 1e6 ? '$' + (mc / 1e6).toFixed(2) + 'M' :
+                                    mc >= 1e3 ? '$' + (mc / 1e3).toFixed(2) + 'K' :
+                                    '$' + mc.toFixed(2);
+                        document.getElementById('marketcap').textContent = text;
+                        return;
+                    }
+                }
+                document.getElementById('marketcap').textContent = 'Soon';
+            } catch (err) {
+                if (err.name !== 'AbortError') {
+                    document.getElementById('marketcap').textContent = 'Soon';
+                }
+            }
+        }
+
+        // Load data on idle
+        if ('requestIdleCallback' in window) {
+            requestIdleCallback(() => {
+                loadXRPLData();
+                loadMarketCap();
+            });
+        } else {
+            setTimeout(() => {
+                loadXRPLData();
+                loadMarketCap();
+            }, 100);
+        }
+
+        setInterval(loadXRPLData, 60000);
+        setInterval(loadMarketCap, 60000);
+
+        // Countdown Timer for NFT Mint
+        const mintDate = new Date('2025-10-05T17:00:00Z').getTime();
+        
+        function updateCountdown() {
+            const now = new Date().getTime();
+            const distance = mintDate - now;
+            
+            if (distance < 0) {
+                document.getElementById('days').textContent = '00';
+                document.getElementById('hours').textContent = '00';
+                document.getElementById('minutes').textContent = '00';
+                document.getElementById('seconds').textContent = '00';
+                return;
+            }
+            
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+            
+            document.getElementById('days').textContent = String(days).padStart(2, '0');
+            document.getElementById('hours').textContent = String(hours).padStart(2, '0');
+            document.getElementById('minutes').textContent = String(minutes).padStart(2, '0');
+            document.getElementById('seconds').textContent = String(seconds).padStart(2, '0');
+        }
+        
+        updateCountdown();
+        setInterval(updateCountdown, 1000);
+
+        // Smooth scroll for menu links
+        document.querySelectorAll('.menu-link').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href').substring(1);
+                const targetElement = document.getElementById(targetId);
+                if (targetElement) {
+                    const menuHeight = document.querySelector('.menu').offsetHeight;
+                    const targetPosition = targetElement.offsetTop - menuHeight;
+                    window.scrollTo({
+                        top: targetPosition,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
