@@ -500,61 +500,6 @@
         setInterval(loadXRPLData, 60000);
         setInterval(loadMarketCap, 60000);
 
-       // Countdown Timer for NFT Mint - Optimized for all devices
-        const mintDate = new Date('2025-10-05T17:00:00Z').getTime();
-        let countdownInterval;
-        
-        // Cache DOM elements for better performance
-        const countdownElements = {
-            days: document.getElementById('days'),
-            hours: document.getElementById('hours'),
-            minutes: document.getElementById('minutes'),
-            seconds: document.getElementById('seconds')
-        };
-        
-        function updateCountdown() {
-            const now = Date.now();
-            const distance = mintDate - now;
-            
-            if (distance < 0) {
-                // Event has passed
-                countdownElements.days.textContent = '00';
-                countdownElements.hours.textContent = '00';
-                countdownElements.minutes.textContent = '00';
-                countdownElements.seconds.textContent = '00';
-                if (countdownInterval) clearInterval(countdownInterval);
-                return;
-            }
-            
-            // Calculate time units
-            const days = Math.floor(distance / 86400000); // 1000 * 60 * 60 * 24
-            const hours = Math.floor((distance % 86400000) / 3600000); // 1000 * 60 * 60
-            const minutes = Math.floor((distance % 3600000) / 60000); // 1000 * 60
-            const seconds = Math.floor((distance % 60000) / 1000);
-            
-            // Use textContent for better performance and avoid layout thrashing
-            countdownElements.days.textContent = String(days).padStart(2, '0');
-            countdownElements.hours.textContent = String(hours).padStart(2, '0');
-            countdownElements.minutes.textContent = String(minutes).padStart(2, '0');
-            countdownElements.seconds.textContent = String(seconds).padStart(2, '0');
-        }
-        
-        // Initial update
-        updateCountdown();
-        
-        // Set interval and store reference for cleanup
-        countdownInterval = setInterval(updateCountdown, 1000);
-        
-        // Pause countdown when page is hidden (mobile battery optimization)
-        document.addEventListener('visibilitychange', function() {
-            if (document.hidden) {
-                if (countdownInterval) clearInterval(countdownInterval);
-            } else {
-                updateCountdown();
-                countdownInterval = setInterval(updateCountdown, 1000);
-            }
-        });
-
         // Smooth scroll for menu links
         document.querySelectorAll('.menu-link').forEach(link => {
             link.addEventListener('click', function(e) {
